@@ -30,7 +30,6 @@
       <Folder Include="Catalogue\Domain\Value Objects\" />
       <Folder Include="Catalogue\Infrastructure\Persistance\" />
       <Folder Include="Catalogue\Infrastructure\Repositories\" />
-      <Folder Include="Catalogue\Presentation\Controllers\" />
       <Folder Include="Movie Theaters\Application\DTOs\" />
       <Folder Include="Movie Theaters\Application\IUseCases\" />
       <Folder Include="Movie Theaters\Application\Use Cases\" />
