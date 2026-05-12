@@ -11,6 +11,8 @@ COPY ["CineSeats/CineSeats.csproj", "CineSeats/"]
 RUN dotnet restore "CineSeats/CineSeats.csproj"
 COPY . .
 WORKDIR "/src/CineSeats"
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet build "./CineSeats.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

@@ -6,18 +6,31 @@ public class Room
     public int Number { get; set; }
     public List<int> Seats { get; set; }
 
-    public Room(int number, List<int> seats)
+    public Room(int number, int seats)
     {
-        if (seats.Count < 10)
+        try
         {
-            throw new ArgumentException("The number of seats cannot be less than 10");
+            if (seats < 10)
+            {
+                throw new ArgumentException("The number of seats cannot be less than 10");
+            }
+        
+            if (number <= 0)
+            {
+                throw new ArgumentNullException("Room number cannot be zero or negative");
+            }
+            
+            Id = Guid.NewGuid();
+            this.Number = number;
+            this.Seats = new List<int>();
+            for (int i = 1; i < seats; i++)
+            {
+                Seats.Add(i);
+            }
         }
-
-        if (number < 1 || number > 100)
+        catch (Exception ex)
         {
-            throw new ArgumentException("The number must be between 1 and 100");
+            Console.WriteLine(ex);
         }
-        this.Number = number;
-        this.Seats = seats;
     }
 }

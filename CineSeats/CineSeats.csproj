@@ -4,11 +4,56 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.26"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.26">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.26">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.4.1" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Catalogue\Application\DTOs\" />
+      <Folder Include="Catalogue\Application\IUseCases\" />
+      <Folder Include="Catalogue\Application\Use Cases\" />
+      <Folder Include="Catalogue\Domain\IRepositories\" />
+      <Folder Include="Catalogue\Domain\Value Objects\" />
+      <Folder Include="Catalogue\Infrastructure\Persistance\" />
+      <Folder Include="Catalogue\Infrastructure\Repositories\" />
+      <Folder Include="Catalogue\Presentation\Controllers\" />
+      <Folder Include="Movie Theaters\Application\DTOs\" />
+      <Folder Include="Movie Theaters\Application\IUseCases\" />
+      <Folder Include="Movie Theaters\Application\Use Cases\" />
+      <Folder Include="Movie Theaters\Domain\IRepositories\" />
+      <Folder Include="Movie Theaters\Domain\Value Objects\" />
+      <Folder Include="Movie Theaters\Infrastructure\Persistance\" />
+      <Folder Include="Movie Theaters\Infrastructure\Repositories\" />
+      <Folder Include="Movie Theaters\Presentation\Controllers\" />
+      <Folder Include="Tickets\Application\DTOs\" />
+      <Folder Include="Tickets\Application\IUseCases\" />
+      <Folder Include="Tickets\Application\Use Cases\" />
+      <Folder Include="Tickets\Domain\Entities\" />
+      <Folder Include="Tickets\Domain\IRepositories\" />
+      <Folder Include="Tickets\Domain\Value Objects\" />
+      <Folder Include="Tickets\Infrastructure\Persistance\" />
+      <Folder Include="Tickets\Infrastructure\Repositories\" />
+      <Folder Include="Tickets\Presentation\Controllers\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
