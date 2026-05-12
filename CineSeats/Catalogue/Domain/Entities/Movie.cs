@@ -81,6 +81,5 @@ public class Movie
         {
             Console.WriteLine(ex);
         }
-        
     }
 }

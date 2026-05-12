@@ -33,8 +33,6 @@
       <Folder Include="Movie Theaters\Application\DTOs\" />
       <Folder Include="Movie Theaters\Application\IUseCases\" />
       <Folder Include="Movie Theaters\Application\Use Cases\" />
-      <Folder Include="Movie Theaters\Domain\IRepositories\" />
-      <Folder Include="Movie Theaters\Domain\Value Objects\" />
       <Folder Include="Movie Theaters\Infrastructure\Persistance\" />
       <Folder Include="Movie Theaters\Infrastructure\Repositories\" />
       <Folder Include="Movie Theaters\Presentation\Controllers\" />

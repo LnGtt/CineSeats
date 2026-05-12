@@ -8,6 +8,7 @@ public class CatalogueController : ControllerBase
 {
     //PARA FACILITAR A CODAGEM, ESTA CLASSE SERÁ CODADA EM FORMATO DE MONÓLITO
     //APÓS ISSO, APLICAREMOS PRINCIPIOS DE ARQUITETURA E DDD
+    // OK200
 
     public CatalogueController(/*use cases*/)
     {
