@@ -39,7 +39,6 @@
       <Folder Include="Tickets\Application\DTOs\" />
       <Folder Include="Tickets\Application\IUseCases\" />
       <Folder Include="Tickets\Application\Use Cases\" />
-      <Folder Include="Tickets\Domain\Entities\" />
       <Folder Include="Tickets\Domain\IRepositories\" />
       <Folder Include="Tickets\Domain\Value Objects\" />
       <Folder Include="Tickets\Infrastructure\Persistance\" />
