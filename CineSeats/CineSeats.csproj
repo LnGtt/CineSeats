@@ -23,13 +23,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Catalogue\Application\DTOs\" />
-      <Folder Include="Catalogue\Application\IUseCases\" />
-      <Folder Include="Catalogue\Application\Use Cases\" />
-      <Folder Include="Catalogue\Domain\IRepositories\" />
-      <Folder Include="Catalogue\Domain\Value Objects\" />
       <Folder Include="Catalogue\Infrastructure\Persistance\" />
       <Folder Include="Catalogue\Infrastructure\Repositories\" />
+      <Folder Include="Catalogue\ValueObject\" />
       <Folder Include="Movie Theaters\Application\DTOs\" />
       <Folder Include="Movie Theaters\Application\IUseCases\" />
       <Folder Include="Movie Theaters\Application\Use Cases\" />
@@ -40,10 +36,10 @@
       <Folder Include="Tickets\Application\IUseCases\" />
       <Folder Include="Tickets\Application\Use Cases\" />
       <Folder Include="Tickets\Domain\IRepositories\" />
-      <Folder Include="Tickets\Domain\Value Objects\" />
       <Folder Include="Tickets\Infrastructure\Persistance\" />
       <Folder Include="Tickets\Infrastructure\Repositories\" />
       <Folder Include="Tickets\Presentation\Controllers\" />
+      <Folder Include="Tickets\Value Object\" />
     </ItemGroup>
 
     <ItemGroup>
