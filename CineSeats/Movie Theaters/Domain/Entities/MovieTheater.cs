@@ -11,19 +11,18 @@ public class MovieTheater
     public EmailVO EmailAddress { get; set; } //Value Object
     public PasswordVO Password { get; set; } //Value Object
     
-    public MovieTheater(string name, List<Room> rooms)
+    public MovieTheater(string name, List<Room> rooms, EmailVO emailAddress, PasswordVO password)
     {
-        if (string.IsNullOrEmpty(name))
-        {
-            throw new ArgumentNullException("name");
-        }
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("O nome do cinema não pode ser vazio.");
 
-        if (rooms == null)
-        {
-            throw new ArgumentNullException("rooms");
-        }
+        if (rooms == null || rooms.Count == 0)
+            throw new ArgumentException("O cinema deve possuir pelo menos uma sala cadastrada.");
 
-        this.Name = name;
-        this.Rooms = rooms;
+        Id = Guid.NewGuid();
+        Name = name;
+        Rooms = rooms;
+        EmailAddress = emailAddress ?? throw new ArgumentNullException(nameof(emailAddress));
+        Password = password ?? throw new ArgumentNullException(nameof(password));
     }
 }
