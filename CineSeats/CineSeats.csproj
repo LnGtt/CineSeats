@@ -8,7 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.26"/>
+      <Compile Remove="Infrastructure\**" />
+      <Content Remove="Infrastructure\**" />
+      <EmbeddedResource Remove="Infrastructure\**" />
+      <None Remove="Infrastructure\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.26" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.26">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,12 +26,11 @@
         </PackageReference>
         <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.4.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Catalogue\Infrastructure\Persistance\" />
-      <Folder Include="Catalogue\Infrastructure\Repositories\" />
       <Folder Include="Catalogue\ValueObject\" />
       <Folder Include="Movie Theaters\Infrastructure\Persistance\" />
       <Folder Include="Movie Theaters\Infrastructure\Repositories\" />

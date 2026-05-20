@@ -27,19 +27,15 @@ public class Movie
         _cast = new Dictionary<string, string>();
     }
     
-    public Movie(Guid cinemaId, string name, IEnumerable<string> genres, string ageRestriction, string synopsis, IDictionary<string, string> cast,
+    public Movie(string name, IEnumerable<string> genres, string ageRestriction, string synopsis, IDictionary<string, string> cast,
         string director, string producer, TimeSpan duration)
     {
-        if (cinemaId == Guid.Empty)
-            throw new ArgumentException("CinemaId cannot be empty");
-        
         var genresList = genres?.ToList() ?? new List<string>();
         var castDictionary = cast != null ? new Dictionary<string, string>(cast) : new Dictionary<string, string>();
         
         Validate(name, genresList, ageRestriction, synopsis, castDictionary, director, producer, duration);
         
         Id = Guid.NewGuid();
-        CinemaId = cinemaId;
         Name = name;
         _genres = genresList;
         AgeRestriction = ageRestriction;

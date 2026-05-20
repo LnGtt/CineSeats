@@ -1,0 +1,143 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|c:\\users\\aula\\desktop\\api william\\cineseats\\cineseats\\catalogue\\application\\dtos\\addmovierequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|solutionrelative:cineseats\\catalogue\\application\\dtos\\addmovierequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|c:\\users\\aula\\desktop\\api william\\cineseats\\cineseats\\catalogue\\application\\dtos\\updatemovierequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|solutionrelative:cineseats\\catalogue\\application\\dtos\\updatemovierequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|c:\\users\\aula\\desktop\\api william\\cineseats\\cineseats\\catalogue\\application\\dtos\\getmoviesummaryresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|solutionrelative:cineseats\\catalogue\\application\\dtos\\getmoviesummaryresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|c:\\users\\aula\\desktop\\api william\\cineseats\\cineseats\\catalogue\\application\\dtos\\getmoviedetailresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|solutionrelative:cineseats\\catalogue\\application\\dtos\\getmoviedetailresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|c:\\users\\aula\\desktop\\api william\\cineseats\\cineseats\\catalogue\\domain\\entities\\movie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|solutionrelative:cineseats\\catalogue\\domain\\entities\\movie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|c:\\users\\aula\\desktop\\api william\\cineseats\\cineseats\\catalogue\\domain\\irepositories\\imovierepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|solutionrelative:cineseats\\catalogue\\domain\\irepositories\\imovierepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|c:\\users\\aula\\desktop\\api william\\cineseats\\cineseats\\catalogue\\infrastructure\\repositories\\movierepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26AF3650-7A3D-4785-8DEF-C0AC3A6D9529}|CineSeats\\CineSeats.csproj|solutionrelative:cineseats\\catalogue\\infrastructure\\repositories\\movierepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UpdateMovieRequest.cs",
+              "DocumentMoniker": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\UpdateMovieRequest.cs",
+              "RelativeDocumentMoniker": "CineSeats\\Catalogue\\Application\\DTOs\\UpdateMovieRequest.cs",
+              "ToolTip": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\UpdateMovieRequest.cs",
+              "RelativeToolTip": "CineSeats\\Catalogue\\Application\\DTOs\\UpdateMovieRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T23:40:29.265Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GetMovieSummaryResponse.cs",
+              "DocumentMoniker": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\GetMovieSummaryResponse.cs",
+              "RelativeDocumentMoniker": "CineSeats\\Catalogue\\Application\\DTOs\\GetMovieSummaryResponse.cs",
+              "ToolTip": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\GetMovieSummaryResponse.cs",
+              "RelativeToolTip": "CineSeats\\Catalogue\\Application\\DTOs\\GetMovieSummaryResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T23:40:27.584Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AddMovieRequest.cs",
+              "DocumentMoniker": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\AddMovieRequest.cs",
+              "RelativeDocumentMoniker": "CineSeats\\Catalogue\\Application\\DTOs\\AddMovieRequest.cs",
+              "ToolTip": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\AddMovieRequest.cs",
+              "RelativeToolTip": "CineSeats\\Catalogue\\Application\\DTOs\\AddMovieRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T23:40:06.697Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GetMovieDetailResponse.cs",
+              "DocumentMoniker": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\GetMovieDetailResponse.cs",
+              "RelativeDocumentMoniker": "CineSeats\\Catalogue\\Application\\DTOs\\GetMovieDetailResponse.cs",
+              "ToolTip": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Application\\DTOs\\GetMovieDetailResponse.cs",
+              "RelativeToolTip": "CineSeats\\Catalogue\\Application\\DTOs\\GetMovieDetailResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T23:40:25.913Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IMovieRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Domain\\IRepositories\\IMovieRepository.cs",
+              "RelativeDocumentMoniker": "CineSeats\\Catalogue\\Domain\\IRepositories\\IMovieRepository.cs",
+              "ToolTip": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Domain\\IRepositories\\IMovieRepository.cs",
+              "RelativeToolTip": "CineSeats\\Catalogue\\Domain\\IRepositories\\IMovieRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T22:56:46.724Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MovieRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Infrastructure\\Repositories\\MovieRepository.cs",
+              "RelativeDocumentMoniker": "CineSeats\\Catalogue\\Infrastructure\\Repositories\\MovieRepository.cs",
+              "ToolTip": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Infrastructure\\Repositories\\MovieRepository.cs",
+              "RelativeToolTip": "CineSeats\\Catalogue\\Infrastructure\\Repositories\\MovieRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T23:03:49.676Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Movie.cs",
+              "DocumentMoniker": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Domain\\Entities\\Movie.cs",
+              "RelativeDocumentMoniker": "CineSeats\\Catalogue\\Domain\\Entities\\Movie.cs",
+              "ToolTip": "C:\\Users\\Aula\\Desktop\\api william\\CineSeats\\CineSeats\\Catalogue\\Domain\\Entities\\Movie.cs",
+              "RelativeToolTip": "CineSeats\\Catalogue\\Domain\\Entities\\Movie.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAgwBMAAACCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T22:41:27.762Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

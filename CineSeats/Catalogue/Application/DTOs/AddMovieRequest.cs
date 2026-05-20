@@ -2,7 +2,6 @@
 
 public class AddMovieRequest
 {
-    public Guid CinemaId { get; set; }
     public string Name { get; set; }
     public List<string> Genres { get; set; }
     public string AgeRestriction { get; set; }

@@ -17,7 +17,6 @@ public class AddMovieUseCase : IAddMovieUseCase
     public async Task Run(AddMovieRequest request)
     {
         var movie = new Movie(
-            request.CinemaId,
             request.Name,
             request.Genres,
             request.AgeRestriction,
