@@ -3,21 +3,28 @@ using Microsoft.EntityFrameworkCore;
 using CineSeats.Catalogue.Domain.Entities;
 
 namespace CineSeats.infrestrutura;
+using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using CineSeats.Movie_Theaters.Domain.Entities;
 
-public class Context_Mongo : DbContext
+public class Context_Mongo
 {
-    public DbSet<Movie> Movies;
+    private readonly IMongoDatabase _database;
 
-    public Context_Mongo(DbContextOptions<Context_Mongo> options) : base(options)
+    public Context_Mongo(IConfiguration configuration)
     {
-    }
-
+        // Pega a string de conexão configurada no appsettings.json
+        var connectionString = configuration.GetConnectionString("MongoConnection");
+        var client = new MongoClient(connectionString);
         
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder); 
-
-        modelBuilder.Entity<Movie>()
-            .HasKey(M => M.Id);
+        // Pega o nome do banco de dados do appsettings
+        var databaseName = configuration.GetSection("MongoSettings:DatabaseName").Value ?? "CineSeatsCatalog";
+        _database = client.GetDatabase(databaseName);
     }
+
+    // Em vez de DbSet, o Mongo usa IMongoCollection
+    public IMongoCollection<Movie> Movies => _database.GetCollection<Movie>("Movies");
+    
+    // Você já pode deixar aqui a coleção para o seu caso de uso de cinemas
+    public IMongoCollection<MovieTheater> MovieTheaters => _database.GetCollection<MovieTheater>("MovieTheaters");
 }

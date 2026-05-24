@@ -15,13 +15,21 @@ public class CreateMovieTheaterUseCase : ICreateMovieTheaterUseCase
         _repository = repository;   
     }
 
-    public void Execute(CreateMovieTheaterRequest request)
+    public async Task ExecuteAsync(CreateMovieTheaterRequest request)
     {
         var email = new EmailVO(request.Email);
         var password = new PasswordVO(request.Password);
+
+        var domainRooms = request.Rooms.Select(r =>
+        {
+            // Passa o número da sala e conta quantos elementos vieram na lista do request
+            return new Room(r.Number, r.Seats.Count);
+        }).ToList();
         
-        var movieTheater = new MovieTheater(request.Name, request.Rooms, email, password);
+        var movieTheater = new MovieTheater(request.Name, domainRooms, email, password);
         
-        _repository.Add(movieTheater);
+        await _repository.AddAsync(movieTheater);
     }
+    
+    
 }

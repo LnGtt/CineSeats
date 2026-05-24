@@ -3,5 +3,5 @@ namespace CineSeats.Movie_Theaters.Application.IUseCases;
 
 public interface ICreateMovieTheaterUseCase
 {
-    void Execute(CreateMovieTheaterRequest request);
+    Task ExecuteAsync(CreateMovieTheaterRequest request);
 }

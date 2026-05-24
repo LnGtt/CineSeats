@@ -21,7 +21,7 @@ public class MovieTheaterController : ControllerBase
     {
         try
         {
-            _useCase.Execute(request);
+            _useCase.ExecuteAsync(request);
             return StatusCode(201, "Cinema cadastrado com sucesso!");
         }
         catch (AggregateException ex)
