@@ -7,8 +7,9 @@ namespace CineSeats.Catalogue.Infrastructure.Repositories
     {
         private readonly DBContext_Mongo _database;
 
-        public MovieRepository()
+        public MovieRepository(DBContext_Mongo database)
         {
+            _database = database;
         }
 
         public async Task AddMovie(Movie newMovie)
@@ -17,12 +18,12 @@ namespace CineSeats.Catalogue.Infrastructure.Repositories
             await _database.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Movie>> GetMovies()
+        public async Task<IEnumerable<Movie>> GetMovies(Guid cinemaId)
         {
             return await _database.Movie.ToListAsync();
         }
 
-        public async Task<Movie> GetMovie(Guid id)
+        public async Task<Movie> GetMovie(Guid id, Guid cinemaId)
         {
             return await _database.Movie.FindAsync(id);
         }

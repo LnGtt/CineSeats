@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using CineSeats.Movie_Theaters.Domain.Entities;
 
-namespace CineSeats.infrestrutura;
+namespace CineSeats.Infrastructure;
 
 public class Context_Post : DbContext
 {

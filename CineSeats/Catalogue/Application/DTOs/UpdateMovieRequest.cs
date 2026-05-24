@@ -3,6 +3,7 @@
 public class UpdateMovieRequest
 {
     public Guid Id { get; set; } 
+    public Guid CinemaId { get; set; }
     public string Name { get; set; }
     public List<string> Genres { get; set; }
     public string AgeRestriction { get; set; }

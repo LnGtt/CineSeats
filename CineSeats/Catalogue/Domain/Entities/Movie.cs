@@ -13,13 +13,13 @@ public class Movie
     public string Producer { get; private set; }
     public TimeSpan Duration { get; private set; }
 
-    private readonly List<string> _genres; //gemini sugeriu, depois tento entender para explicar pq
+    private readonly List<string> _genres; 
     public IReadOnlyCollection<string> Genres => _genres.AsReadOnly();
     
-    private readonly Dictionary<string, string> _cast; //gemini sugeriu, depois tento entender para explicar pq
+    private readonly Dictionary<string, string> _cast;
     public IReadOnlyDictionary<string, string> Cast => new ReadOnlyDictionary<string, string>(_cast); //Nome ator: nome personagem
     
-    private static readonly string[] _restrictions = { "L", "10", "12", "14", "16", "18" }; //gemini sugeriu, depois tento entender para explicar pq
+    private static readonly string[] _restrictions = { "L", "10", "12", "14", "16", "18" };
     
     protected Movie() //exigência de MongoDB
     {
@@ -27,15 +27,19 @@ public class Movie
         _cast = new Dictionary<string, string>();
     }
     
-    public Movie(string name, IEnumerable<string> genres, string ageRestriction, string synopsis, IDictionary<string, string> cast,
+    public Movie(Guid cinemaId, string name, IEnumerable<string> genres, string ageRestriction, string synopsis, IDictionary<string, string> cast,
         string director, string producer, TimeSpan duration)
     {
+        if (cinemaId == Guid.Empty)
+            throw new ArgumentException("CinemaId cannot be empty");
+        
         var genresList = genres?.ToList() ?? new List<string>();
         var castDictionary = cast != null ? new Dictionary<string, string>(cast) : new Dictionary<string, string>();
         
         Validate(name, genresList, ageRestriction, synopsis, castDictionary, director, producer, duration);
         
         Id = Guid.NewGuid();
+        CinemaId = cinemaId;
         Name = name;
         _genres = genresList;
         AgeRestriction = ageRestriction;

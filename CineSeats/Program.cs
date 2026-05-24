@@ -1,4 +1,9 @@
-using CineSeats.infrestrutura;
+using System.Reflection.Metadata;
+using CineSeats.Catalogue.Application.IUseCases;
+using CineSeats.Catalogue.Application.Use_Cases;
+using CineSeats.Catalogue.Domain.IRepositories;
+using CineSeats.Catalogue.Infrastructure.Repositories;
+using CineSeats.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -10,6 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Scoped Repositories
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+//Scoped Use Cases
+builder.Services.AddScoped<IAddMovieUseCase, AddMovieUseCase>();
+builder.Services.AddScoped<IDeleteMovieUseCase, DeleteMovieUseCase>();
+builder.Services.AddScoped<IGetMovieDetailUseCase, GetMovieDetailUseCase>();
+builder.Services.AddScoped<IListMoviesUseCase, ListMoviesUseCase>();
+builder.Services.AddScoped<IUpdateMovieUseCase, UpdateMovieUseCase>();
 
 // configure para as usecase e repository
 

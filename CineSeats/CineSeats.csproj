@@ -30,8 +30,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Catalogue\Application\Use Cases\Room Use Cases\" />
       <Folder Include="Catalogue\Infrastructure\Persistance\" />
-      <Folder Include="Catalogue\ValueObject\" />
       <Folder Include="Movie Theaters\Infrastructure\Persistance\" />
       <Folder Include="Movie Theaters\Infrastructure\Repositories\" />
       <Folder Include="Tickets\Application\DTOs\" />
