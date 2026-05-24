@@ -33,7 +33,6 @@
       <Folder Include="Catalogue\Application\Use Cases\Room Use Cases\" />
       <Folder Include="Catalogue\Infrastructure\Persistance\" />
       <Folder Include="Movie Theaters\Infrastructure\Persistance\" />
-      <Folder Include="Movie Theaters\Infrastructure\Repositories\" />
       <Folder Include="Tickets\Application\DTOs\" />
       <Folder Include="Tickets\Application\IUseCases\" />
       <Folder Include="Tickets\Application\Use Cases\" />
