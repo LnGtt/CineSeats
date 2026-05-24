@@ -1,4 +1,4 @@
-﻿namespace CineSeats.Catalogue.Application.IUseCases;
+﻿namespace CineSeats.Catalogue.Application.IUseCases.Movie_IUseCases;
 
 public interface IDeleteMovieUseCase
 {

@@ -1,7 +1,7 @@
-﻿using CineSeats.Catalogue.Application.IUseCases;
+﻿using CineSeats.Catalogue.Application.IUseCases.Movie_IUseCases;
 using CineSeats.Catalogue.Domain.IRepositories;
 
-namespace CineSeats.Catalogue.Application.Use_Cases;
+namespace CineSeats.Catalogue.Application.Use_Cases.Movie_Use_Cases;
 
 public class DeleteMovieUseCase : IDeleteMovieUseCase
 {

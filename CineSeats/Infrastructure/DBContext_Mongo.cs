@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using CineSeats.Catalogue.Domain.Entities;
 
-namespace CineSeats.infrestrutura;
+namespace CineSeats.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using CineSeats.Movie_Theaters.Domain.Entities;

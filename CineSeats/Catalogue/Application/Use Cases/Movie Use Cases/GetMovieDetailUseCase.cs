@@ -1,8 +1,8 @@
-﻿using CineSeats.Catalogue.Application.DTOs;
-using CineSeats.Catalogue.Application.IUseCases;
+﻿using CineSeats.Catalogue.Application.DTOs.Movie_DTOs;
+using CineSeats.Catalogue.Application.IUseCases.Movie_IUseCases;
 using CineSeats.Catalogue.Domain.IRepositories;
 
-namespace CineSeats.Catalogue.Application.Use_Cases;
+namespace CineSeats.Catalogue.Application.Use_Cases.Movie_Use_Cases;
 
 public class GetMovieDetailUseCase : IGetMovieDetailUseCase
 {

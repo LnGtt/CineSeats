@@ -33,4 +33,19 @@ public class Room
         RoomNumber = roomNumber;
         _layout = layoutList;
     }
+    
+    public void UpdateDetails(int roomNumber, IEnumerable<RowMap> newLayout)
+    {
+        if (roomNumber <= 0)
+            throw new ArgumentException("Room number cannot be zero or negative");
+
+        var layoutList = newLayout?.ToList() ?? new List<RowMap>();
+        if (layoutList.Count == 0)
+            throw new ArgumentException("Room layout must have at least one row");
+
+        RoomNumber = roomNumber;
+    
+        _layout.Clear();
+        _layout.AddRange(layoutList);
+    }
 }

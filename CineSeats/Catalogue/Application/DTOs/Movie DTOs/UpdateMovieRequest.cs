@@ -1,4 +1,4 @@
-﻿namespace CineSeats.Catalogue.Application.DTOs;
+﻿namespace CineSeats.Catalogue.Application.DTOs.Movie_DTOs;
 
 public class UpdateMovieRequest
 {
