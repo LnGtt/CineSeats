@@ -5,11 +5,11 @@ using CineSeats.Catalogue.Domain.IRepositories;
 using CineSeats.Catalogue.Infrastructure.Repositories;
 using CineSeats.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -31,13 +31,7 @@ builder.Services.AddDbContext<Context_Post>(options =>
     options.UseNpgsql(postgreConnectionString)
 );
 
-var mongoConnectionString = builder.Configuration.GetConnectionString("MongoConnection");
-builder.Services.AddDbContext<Context_Mongo>(options =>
-    options.UseMongoDB(
-        mongoConnectionString ?? throw new InvalidOperationException("Connection string do Mongo não encontrada."), 
-        "NomeDoSeuBancoNoMongo" // <-- O nome do banco vai aqui
-    )
-);
+builder.Services.AddScoped<Context_Mongo>();
 
 
 var app = builder.Build();

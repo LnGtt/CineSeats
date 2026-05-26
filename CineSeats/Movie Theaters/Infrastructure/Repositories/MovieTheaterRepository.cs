@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using CineSeats.infrestrutura;
+using CineSeats.Infrastructure;
 using CineSeats.Movie_Theaters.Domain.Entities;
 using CineSeats.Movie_Theaters.Domain.IRepositories;
 

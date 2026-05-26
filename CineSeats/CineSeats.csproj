@@ -17,6 +17,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="11.0.0-preview.4.26230.115" />
         <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.4.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
