@@ -13,18 +13,14 @@ public class Context_Mongo
 
     public Context_Mongo(IConfiguration configuration)
     {
-        // Pega a string de conexão configurada no appsettings.json
         var connectionString = configuration.GetConnectionString("MongoConnection");
         var client = new MongoClient(connectionString);
         
-        // Pega o nome do banco de dados do appsettings
         var databaseName = configuration.GetSection("MongoSettings:DatabaseName").Value ?? "CineSeatsCatalog";
         _database = client.GetDatabase(databaseName);
     }
-
-    // Em vez de DbSet, o Mongo usa IMongoCollection
+    
     public IMongoCollection<Movie> Movies => _database.GetCollection<Movie>("Movies");
     
-    // Você já pode deixar aqui a coleção para o seu caso de uso de cinemas
     public IMongoCollection<MovieTheater> MovieTheaters => _database.GetCollection<MovieTheater>("MovieTheaters");
 }

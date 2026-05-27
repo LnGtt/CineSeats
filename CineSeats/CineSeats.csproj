@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <Folder Include="Catalogue\Infrastructure\Persistance\" />
+      <Folder Include="Infrastructure\Models\ModelsMongo\" />
       <Folder Include="Movie Theaters\Infrastructure\Persistance\" />
       <Folder Include="Tickets\Application\DTOs\" />
       <Folder Include="Tickets\Application\IUseCases\" />
