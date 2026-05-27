@@ -12,6 +12,8 @@ public class Movie
     public string Director { get; private set; }
     public string Producer { get; private set; }
     public TimeSpan Duration { get; private set; }
+    //public DateOnly StartDate { get; private set; }
+    //public DateOnly EndDate { get; private set; }
 
     private readonly List<string> _genres; 
     public IReadOnlyCollection<string> Genres => _genres.AsReadOnly();
