@@ -1,4 +1,4 @@
-namespace CineSeats.Movie_Theaters.ValueObject;
+namespace CineSeats.Catalogue.ValueObject;
 
 public class PasswordVO
 {
@@ -21,9 +21,14 @@ public class PasswordVO
             throw new ArgumentOutOfRangeException(nameof(password), "Password must be less than 20 characters long");
         }
 
-        if (password.Any(char.IsUpper))
+        if (!password.Any(char.IsUpper))
         {
             throw new ArgumentException("Password must contain at least one upper case letter");
+        }
+
+        if (!password.Any(char.IsDigit))
+        {
+            throw new ArgumentException("Password must contain at least one digit");
         }
 
         this.Password = password;

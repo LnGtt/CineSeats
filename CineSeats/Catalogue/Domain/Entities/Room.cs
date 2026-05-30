@@ -5,7 +5,7 @@ namespace CineSeats.Catalogue.Domain.Entities;
 public class Room
 {
     public Guid Id { get; private set; }
-    public Guid CinemaId { get; private set; }
+    //public Guid CinemaId { get; private set; }
     public int RoomNumber { get; private set; }
     private readonly List<RowMap> _layout;
     public IReadOnlyCollection<RowMap> Layout => _layout.AsReadOnly();
@@ -18,8 +18,8 @@ public class Room
     
     public Room(Guid cinemaId, int roomNumber, IEnumerable<RowMap> layout)
     {
-        if (cinemaId == Guid.Empty)
-            throw new ArgumentException("CinemaId cannot be empty");
+        // if (cinemaId == Guid.Empty)
+        //     throw new ArgumentException("CinemaId cannot be empty");
 
         if (roomNumber <= 0)
             throw new ArgumentException("Room number cannot be zero or negative");
@@ -29,7 +29,7 @@ public class Room
             throw new ArgumentException("Room layout must have at least one row");
 
         Id = Guid.NewGuid();
-        CinemaId = cinemaId;
+        //CinemaId = cinemaId;
         RoomNumber = roomNumber;
         _layout = layoutList;
     }

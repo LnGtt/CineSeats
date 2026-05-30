@@ -1,4 +1,4 @@
-namespace CineSeats.Movie_Theaters.ValueObject;
+namespace CineSeats.Catalogue.ValueObject;
 
 public class EmailVO
 {

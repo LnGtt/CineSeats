@@ -7,9 +7,10 @@ public class Session
     public Guid RoomId { get; private set; }
     public string Description { get; private set; } //exemplo: Sessão 19:30 CineMais sala 3
     public TimeOnly? StartTime { get; private set; }
-    public TimeOnly EndTime { get; private set; }
+    public decimal TicketPrice { get; private set; }
+    //public TimeOnly EndTime { get; private set; }
 
-    public Session(Guid movieId, Guid roomId, string description, TimeOnly? startTime)
+    public Session(Guid movieId, Guid roomId, string description, TimeOnly? startTime, decimal ticketPrice)
     {
         if (movieId == Guid.Empty)
             throw new ArgumentException("Movie Id cannot be empty");
@@ -17,25 +18,58 @@ public class Session
         if (roomId == Guid.Empty)
             throw new ArgumentException("Room Id cannot be empty");
 
-        if (description == null)
-            throw new ArgumentException("Description cannot be null");
+        if (string.IsNullOrEmpty(description))
+            throw new ArgumentException("Description cannot be null or empty");
 
         if (startTime == null)
-            throw new ArgumentException("Start Time cannot be null");
+            throw new ArgumentException("Start time cannot be null");
+        
+        if (ticketPrice <= 0)
+            throw new ArgumentException("Ticket price can't be zero or negative");
 
         Id = Guid.NewGuid();
         MovieId = movieId;
         RoomId = roomId;
         Description = description;
         StartTime = startTime;
+        TicketPrice = ticketPrice;
+    }
+    
+    public void UpdateStartTime(TimeOnly? startTime)
+    {
+        if (startTime == null)
+            throw new ArgumentException("Start time cannot be null");
         
-        /*if (Movie.duration <= 1:30h)
-              EndTime = startTime + 1:30h
-          else if (<= 2h)
-              EndTime = startTime + 2h
-          else
-              EndTime = startTime + 2:30h
-        */  
+        StartTime = startTime;
     }
 
+    public void ChangeRoom(Guid newRoom)
+    {
+        if (newRoom == this.RoomId)
+            throw new ArgumentException("Room Id can't be changed");
+        
+        if (newRoom == Guid.Empty)
+            throw new ArgumentException("Room Id cannot be empty");
+        
+        RoomId = newRoom;
+    }
+
+    public void UpdateDescription(string newDescription)
+    {
+        if (string.IsNullOrEmpty(newDescription))
+            throw new ArgumentException("Description cannot be null or empty");
+        
+        Description = newDescription;
+    }
+
+    public void UpdateTicketPrice(decimal newTicketPrice)
+    {
+        if (newTicketPrice == this.TicketPrice)
+            throw new ArgumentException("Ticket price can't be changed");
+        
+        if (newTicketPrice <= 0)
+            throw new ArgumentException("Ticket price can't be zero or negative");
+        
+        TicketPrice = newTicketPrice;
+    }
 }
