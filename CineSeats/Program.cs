@@ -31,7 +31,7 @@ builder.Services.AddDbContext<Context_Post>(options =>
     options.UseNpgsql(postgreConnectionString)
 );
 
-builder.Services.AddScoped<Context_Mongo>();
+
 
 
 var app = builder.Build();

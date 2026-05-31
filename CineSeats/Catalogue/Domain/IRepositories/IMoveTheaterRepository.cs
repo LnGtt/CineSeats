@@ -2,7 +2,7 @@ using CineSeats.Catalogue.Domain.Entities;
 
 namespace CineSeats.Catalogue.Domain.IRepositories;
 
-public interface IMoveTheaterRepository
+public interface IMovieTheaterRepository
 {
     MovieTheater FindById(Guid id);
     MovieTheater Save(MovieTheater movieTheater);

@@ -3,14 +3,16 @@ using CineSeats.Catalogue.Domain.Entities;
 using CineSeats.Catalogue.Application.IUseCases.MovieTheaters_IUseCases;
 using CineSeats.Catalogue.ValueObject;
 using CineSeats.Catalogue.Application.DTOs.MovieTheaters_DTOs;
+using CineSeats.Catalogue.Domain.IRepositories;
+
 
 namespace CineSeats.Catalogue.Application.Use_Cases.MovieTheaters_Use_Case;
 
 public class CreateMovieTheaterUseCase : ICreateMovieTheaterUseCase 
 {
-    private readonly IMoveRepository _repository;
+    private readonly IMovieTheaterRepository _repository;
 
-    public CreateMovieTheaterUseCase(IMoveRepository repository)
+    public CreateMovieTheaterUseCase(IMovieTheaterRepository repository)
     {
         _repository = repository;   
     }
