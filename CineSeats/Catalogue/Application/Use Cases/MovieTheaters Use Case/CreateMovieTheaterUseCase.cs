@@ -1,10 +1,10 @@
-using CineSeats.Movie_Theaters.Application.DTOs;
-using CineSeats.Movie_Theaters.Application.IUseCases;
-using CineSeats.Movie_Theaters.Domain.Entities;
-using CineSeats.Movie_Theaters.Domain.IRepositories;
-using CineSeats.Movie_Theaters.ValueObject;
+using CineSeats.Catalogue.Application.Use_Cases.MovieTheaters_Use_Case;
+using CineSeats.Catalogue.Domain.Entities;
+using CineSeats.Catalogue.Application.IUseCases.MovieTheaters_IUseCases;
+using CineSeats.Catalogue.ValueObject;
+using CineSeats.Catalogue.Application.DTOs.MovieTheaters_DTOs;
 
-namespace CineSeats.Movie_Theaters.Application.Use_Cases;
+namespace CineSeats.Catalogue.Application.Use_Cases.MovieTheaters_Use_Case;
 
 public class CreateMovieTheaterUseCase : ICreateMovieTheaterUseCase 
 {
@@ -30,6 +30,4 @@ public class CreateMovieTheaterUseCase : ICreateMovieTheaterUseCase
         
         await _repository.AddAsync(movieTheater);
     }
-    
-    
 }

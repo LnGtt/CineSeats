@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using CineSeats.Infrastructure.Models.ModelsPost;
-// using CineSeats.Movie_Theaters.Domain.Entities;
-// using CineSeats.Tickets.Domain.Entities;
-// using CineSeats.Catalogue.Domain.Entities;
-
+using CineSeats.Catalogue.ValueObject;
 namespace CineSeats.Infrastructure;
 
 public class Context_Post : DbContext
@@ -14,56 +10,57 @@ public class Context_Post : DbContext
     {
     }
     
-    // Definiçao para os MovieTheaters
-    public DbSet<MovieTheater> MovieTheaters { get; set; } 
-    public DbSet<Room> Rooms { get; set; } = null!;
+    // DEFINIÇÃO PARA O CATÁLOGO (Catalogue)
+    // ==========================================
+    public DbSet<CineSeats.Catalogue.Domain.Entities.MovieTheater> MovieTheaters { get; set; } 
+    public DbSet<CineSeats.Catalogue.Domain.Entities.Room> Room { get; set; } = null!;
+    public DbSet<CineSeats.Catalogue.Domain.Entities.Movie> Movie { get; set; } = null!;
+    public DbSet<CineSeats.Catalogue.Domain.Entities.Session> Sessionss { get; set; } = null!;
+        
     
-    // Definiçao para os Tickts
-    public DbSet<Session> Sessions { get; set; } = null!;
-    public DbSet<SessionSeat> SessionSeats { get; set; } = null!;
-    public DbSet<tickets> Tickets { get; set; } = null!;
+    // DEFINIÇÃO PARA OS TICKETS (Tickets)
+    // ==========================================
     
-    //Definição para catalogo
-    public DbSet<Room> RoomCatalogo { get; set; } = null!;
-    public DbSet<Movie> Movies { get; set; } = null!;
-    public DbSet<Session> SessionsCatalogo { get; set; } = null!;
-
+    public DbSet<CineSeats.Tickets.Domain.Entities.Session> Sessions { get; set; } = null!;
+    public DbSet<CineSeats.Tickets.Domain.Entities.SessionSeat> SessionSeats { get; set; } = null!;
+    public DbSet<CineSeats.Tickets.Domain.Entities.tickets> Tickets { get; set; } = null!;
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder); 
         
-        // chave primária para tickts
-        modelBuilder.Entity<Session>().HasKey(s => s.Id);
-        modelBuilder.Entity<SessionSeat>().HasKey(ss => ss.Id);
-        modelBuilder.Entity<tickets>().HasKey(t => t.Id);
+        // CONFIGURAÇÕES DE TICKETS
+        // ==========================================
+        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.Session>().HasKey(s => s.Id);
+        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.SessionSeat>().HasKey(ss => ss.Id);
+        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.tickets>().HasKey(t => t.Id);
         
         // Relacionamento 1 para Muitos: Uma Sessão tem muitos Assentos
-        modelBuilder.Entity<SessionSeat>()
+        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.SessionSeat>()
             .HasOne(ss => ss.Session)
             .WithMany(s => s.Seats)
             .HasForeignKey(ss => ss.SessionId)
-            .OnDelete(DeleteBehavior.Cascade); // Se deletar a sessão, deleta os status das cadeiras
+            .OnDelete(DeleteBehavior.Cascade);
         
-        
-        modelBuilder.Entity<tickets>()
+        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.tickets>()
             .HasIndex(t => new { t.SessionId, t.SeatNumber })
             .IsUnique();
-        
-
-        modelBuilder.Entity<MovieTheater>(entity =>
+        // CONFIGURAÇÕES DE CATÁLOGO
+        // ==========================================
+        modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.MovieTheater>(entity =>
         {
             entity.HasKey(mt => mt.Id);
             
             entity.OwnsOne(mt => mt.EmailAddress, email =>
             {
-                email.Property<string>(e => e.EmailAddress) 
+                email.Property(e => e.EmailAddress) 
                     .HasColumnName("Email")
                     .IsRequired();
             });
             
             entity.OwnsOne(mt => mt.Password, pwd =>
             {
-                pwd.Property<string>(p => p.Password) 
+                pwd.Property(p => p.Password) 
                     .HasColumnName("PasswordHash")
                     .IsRequired();
             });
@@ -73,14 +70,16 @@ public class Context_Post : DbContext
                 .HasForeignKey("MovieTheaterId") 
                 .OnDelete(DeleteBehavior.Cascade);
         });
-        // 1 filme para uma sala , uma sala vai ter varias sessoes, 1 filme tem varias sessoes  
         
-        modelBuilder.Entity<Room>(entity =>
-        {
-            entity.HasKey(r => r.Id);
-            
-            entity.Property(r => r.Seats)
-                .HasColumnType("integer[]");
-        });
+        // // Configuração da Sala do Catálogo
+        // modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Room>(entity =>
+        // {
+        //     entity.HasKey(r => r.Id);
+        //     
+        //     entity.Property(r => r.Seats)
+        //         .HasColumnType("integer[]");
+        // });
+
+        
     }
 }

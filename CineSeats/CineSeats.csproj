@@ -25,8 +25,6 @@
 
     <ItemGroup>
       <Folder Include="Catalogue\Infrastructure\Persistance\" />
-      <Folder Include="Infrastructure\Models\ModelsMongo\" />
-      <Folder Include="Movie Theaters\Infrastructure\Persistance\" />
       <Folder Include="Tickets\Application\DTOs\" />
       <Folder Include="Tickets\Application\IUseCases\" />
       <Folder Include="Tickets\Application\Use Cases\" />
@@ -41,10 +39,6 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="Infrastructure\DBContext_Mongo.cs" />
     </ItemGroup>
 
 </Project>

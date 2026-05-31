@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using CineSeats.Movie_Theaters.Application.DTOs;
-using CineSeats.Movie_Theaters.Application.IUseCases;
-using CineSeats.Movie_Theaters.Domain.Entities;
+using CineSeats.Catalogue.Application.IUseCases.MovieTheaters_IUseCases;
+using CineSeats.Catalogue.Application.DTOs.MovieTheaters_DTOs;
 
-namespace CineSeats.Movie_Theaters.Presentation.Controllers;
+
+namespace CineSeats.Catalogue.Presentation.Controllers;
+
+
 
 [ApiController]
 [Route("Api/[controller]")]

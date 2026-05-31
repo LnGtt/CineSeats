@@ -1,6 +1,5 @@
-using CineSeats.Movie_Theaters.Domain.Entities;
-
-namespace CineSeats.Movie_Theaters.Application.DTOs;
+using CineSeats.Catalogue.Domain.Entities;
+namespace CineSeats.Catalogue.Application.DTOs.MovieTheaters_DTOs;
 
 public class CreateMovieTheaterRequest
 {

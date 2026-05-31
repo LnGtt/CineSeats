@@ -1,7 +1,8 @@
-﻿using CineSeats.Movie_Theaters.Domain.Entities;
-namespace CineSeats.Movie_Theaters.Domain.IRepositories;
+using CineSeats.Catalogue.Domain.Entities;
 
-public interface IMoveRepository
+namespace CineSeats.Catalogue.Domain.IRepositories;
+
+public interface IMoveTheaterRepository
 {
     MovieTheater FindById(Guid id);
     MovieTheater Save(MovieTheater movieTheater);

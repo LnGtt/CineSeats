@@ -1,12 +1,13 @@
 ﻿using CineSeats.Catalogue.Domain.Entities;
 using CineSeats.Catalogue.Domain.IRepositories;
+using CineSeats.Infrastructure;
 
 namespace CineSeats.Catalogue.Infrastructure.Repositories;
 
 public class RoomRepository : IRoomRepository
 {
-    private readonly DBContext_Mongo _database;
-    public RoomRepository(DBContext_Mongo database)
+    private readonly Context_Post _database;
+    public RoomRepository(Context_Post database)
     {
         _database = database;
     }

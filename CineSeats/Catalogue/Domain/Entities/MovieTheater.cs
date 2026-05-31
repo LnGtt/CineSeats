@@ -1,7 +1,6 @@
-﻿namespace CineSeats.Movie_Theaters.Domain.Entities;
-using CineSeats.Movie_Theaters.Domain.Entities;
-using CineSeats.Movie_Theaters.ValueObject;
+using CineSeats.Catalogue.ValueObject;
 
+namespace CineSeats.Catalogue.Domain.Entities;
 
 public class MovieTheater
 {

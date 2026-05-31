@@ -1,4 +1,5 @@
-﻿using CineSeats.Movie_Theaters.ValueObject;
+﻿using CineSeats.Catalogue.Domain.Entities;
+using CineSeats.Catalogue.ValueObject;
 
 namespace CineSeats.Infrastructure.Models.ModelsPost;
 

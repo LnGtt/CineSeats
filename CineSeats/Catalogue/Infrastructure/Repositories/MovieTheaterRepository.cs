@@ -1,10 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using CineSeats.Infrastructure;
-using CineSeats.Movie_Theaters.Domain.Entities;
-using CineSeats.Movie_Theaters.Domain.IRepositories;
-using cinema = CineSeats.Infrastructure.Models.ModelsPost.MovieTheater;
-
-namespace CineSeats.Movie_Theaters.Infrastructure.Repositories;
+using CineSeats.Catalogue.Domain.Entities;
+namespace CineSeats.Catalogue.Infrastructure.Repositories;
 
 public class MovieTheaterRepository
 {
@@ -15,7 +11,7 @@ public class MovieTheaterRepository
         _context = context;
     }
 
-    public async Task AddAsync(cinema movieTheater)
+    public async Task AddAsync(MovieTheater movieTheater)
     {
         await _context.MovieTheaters.AddAsync(movieTheater);
         await _context.SaveChangesAsync();
