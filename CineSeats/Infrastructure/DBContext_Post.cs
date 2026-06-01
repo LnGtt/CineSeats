@@ -12,10 +12,10 @@ public class Context_Post : DbContext
     
     // DEFINIÇÃO PARA O CATÁLOGO (Catalogue)
     // ==========================================
-    public DbSet<CineSeats.Catalogue.Domain.Entities.MovieTheater> MovieTheaters { get; set; } 
     public DbSet<CineSeats.Catalogue.Domain.Entities.Room> Room { get; set; } = null!;
     public DbSet<CineSeats.Catalogue.Domain.Entities.Movie> Movie { get; set; } = null!;
     public DbSet<CineSeats.Catalogue.Domain.Entities.Session> Sessionss { get; set; } = null!;
+    public DbSet<CineSeats.Catalogue.Domain.Entities.Admin> Admin { get; set; } = null!;
         
     
     // DEFINIÇÃO PARA OS TICKETS (Tickets)
@@ -35,6 +35,8 @@ public class Context_Post : DbContext
         modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.SessionSeat>().HasKey(ss => ss.Id);
         modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.tickets>().HasKey(t => t.Id);
         
+        modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Admin>().HasKey(a => a.Id);
+        
         // Relacionamento 1 para Muitos: Uma Sessão tem muitos Assentos
         modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.SessionSeat>()
             .HasOne(ss => ss.Session)
@@ -47,39 +49,27 @@ public class Context_Post : DbContext
             .IsUnique();
         // CONFIGURAÇÕES DE CATÁLOGO
         // ==========================================
-        modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.MovieTheater>(entity =>
+        modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Admin>(entity =>
         {
-            entity.HasKey(mt => mt.Id);
-            
-            entity.OwnsOne(mt => mt.EmailAddress, email =>
+            entity.HasKey(a => a.Id);
+    
+            // Configura o Value Object EmailAddress do Admin
+            entity.OwnsOne(a => a.EmailAddress, email =>
             {
-                email.Property(e => e.EmailAddress) 
-                    .HasColumnName("Email")
+                // ATENÇÃO: Troque '.Value' pelo nome da propriedade string interna do seu EmailVO (ex: e.Address, e.Texto)
+                email.Property(e => e.EmailAddress)  
+                    .HasColumnName("AdminEmail")
                     .IsRequired();
             });
             
-            entity.OwnsOne(mt => mt.Password, pwd =>
+            entity.OwnsOne(a => a.Password, pwd =>
             {
-                pwd.Property(p => p.Password) 
-                    .HasColumnName("PasswordHash")
+                
+                pwd.Property(p => p.Password)  
+                    .HasColumnName("AdminPasswordHash")
                     .IsRequired();
-            });
-            
-            entity.HasMany(mt => mt.Rooms)
-                .WithOne() 
-                .HasForeignKey("MovieTheaterId") 
-                .OnDelete(DeleteBehavior.Cascade);
+                //.OnDelete(DeleteBehavior.Cascade);
+            });   
         });
-        
-        // // Configuração da Sala do Catálogo
-        // modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Room>(entity =>
-        // {
-        //     entity.HasKey(r => r.Id);
-        //     
-        //     entity.Property(r => r.Seats)
-        //         .HasColumnType("integer[]");
-        // });
-
-        
     }
 }

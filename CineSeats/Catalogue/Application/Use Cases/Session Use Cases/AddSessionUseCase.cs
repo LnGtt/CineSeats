@@ -1,6 +1,7 @@
 ﻿using CineSeats.Catalogue.Application.DTOs.Session_DTOs;
 using CineSeats.Catalogue.Application.IUseCases.Session_IUseCases;
 using CineSeats.Catalogue.Domain.IRepositories;
+using CineSeats.Catalogue.Domain.Entities;
 
 namespace CineSeats.Catalogue.Application.Use_Cases.Session_Use_Cases;
 
