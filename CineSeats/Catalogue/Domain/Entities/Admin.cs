@@ -8,6 +8,11 @@ public class Admin
     public string Name { get; private set; }
     public EmailVO EmailAddress { get; private set; }
     public PasswordVO Password { get; private set; }
+    
+    protected Admin()
+    {
+        // O EF Core precisa dele vazio para injetar os Value Objects/Owned Types
+    }
 
     public Admin(string name, EmailVO email, PasswordVO password)
     {

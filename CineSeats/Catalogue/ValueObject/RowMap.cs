@@ -4,6 +4,8 @@ public class RowMap
 {
     public string RowLetter { get; set; }
     public int NumberOfSeats { get; set; }
+    
+    protected RowMap() { }
 
     public RowMap(string rowLetter, int numberOfSeats)
     {

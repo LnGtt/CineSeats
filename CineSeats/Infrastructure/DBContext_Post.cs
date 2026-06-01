@@ -79,5 +79,18 @@ public class Context_Post : DbContext
             entity.Property(s => s.TicketPrice)
                 .HasPrecision(18, 2); 
         });
+        modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Room>(entity =>
+        {
+            entity.HasKey(r => r.Id);
+    
+            entity.Property(r => r.RoomNumber)
+                .IsRequired();
+
+            
+            entity.OwnsMany(r => r.Layout, builder =>
+            {
+                builder.ToJson(); 
+            });
+        });
     }
 }
