@@ -14,7 +14,7 @@ public class Context_Post : DbContext
     // ==========================================
     public DbSet<CineSeats.Catalogue.Domain.Entities.Room> Room { get; set; } = null!;
     public DbSet<CineSeats.Catalogue.Domain.Entities.Movie> Movie { get; set; } = null!;
-    public DbSet<CineSeats.Catalogue.Domain.Entities.Session> Sessionss { get; set; } = null!;
+    public DbSet<CineSeats.Catalogue.Domain.Entities.Session> SessionsCatalogo { get; set; } = null!;
     public DbSet<CineSeats.Catalogue.Domain.Entities.Admin> Admin { get; set; } = null!;
         
     
@@ -47,16 +47,17 @@ public class Context_Post : DbContext
         modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.tickets>()
             .HasIndex(t => new { t.SessionId, t.SeatNumber })
             .IsUnique();
+        
         // CONFIGURAÇÕES DE CATÁLOGO
         // ==========================================
         modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Admin>(entity =>
         {
             entity.HasKey(a => a.Id);
     
-            // Configura o Value Object EmailAddress do Admin
+            
             entity.OwnsOne(a => a.EmailAddress, email =>
             {
-                // ATENÇÃO: Troque '.Value' pelo nome da propriedade string interna do seu EmailVO (ex: e.Address, e.Texto)
+                
                 email.Property(e => e.EmailAddress)  
                     .HasColumnName("AdminEmail")
                     .IsRequired();
@@ -70,6 +71,13 @@ public class Context_Post : DbContext
                     .IsRequired();
                 //.OnDelete(DeleteBehavior.Cascade);
             });   
+        });
+        modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Session>(entity =>
+        {
+            entity.HasKey(s => s.Id);
+            
+            entity.Property(s => s.TicketPrice)
+                .HasPrecision(18, 2); 
         });
     }
 }
