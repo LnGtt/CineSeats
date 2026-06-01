@@ -2,7 +2,6 @@
 
 public class AddRoomRequest
 {
-    public Guid CinemaId { get; set; }
     public int RoomNumber { get; set; }
     public List<RowMapDTO> Layout { get; set; }
 }

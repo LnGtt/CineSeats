@@ -4,5 +4,5 @@ namespace CineSeats.Catalogue.Application.IUseCases.Movie_IUseCases;
 
 public interface IListMoviesUseCase
 {
-    Task<IEnumerable<GetMovieSummaryResponse>> Run(Guid cinemaId);
+    Task<IEnumerable<GetMovieResponse>> Run(Guid cinemaId);
 }

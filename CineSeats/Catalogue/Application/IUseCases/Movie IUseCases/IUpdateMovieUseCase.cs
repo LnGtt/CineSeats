@@ -4,5 +4,5 @@ namespace CineSeats.Catalogue.Application.IUseCases.Movie_IUseCases;
 
 public interface IUpdateMovieUseCase
 {
-    Task Run(UpdateMovieRequest request);
+    Task Run(UpdateMovieDetailsRequest detailsRequest);
 }

@@ -12,11 +12,11 @@ public class ListRoomsUseCase : IListRoomsUseCase
         _roomRepository = roomRepository;
     }
     
-    public async Task<IEnumerable<RoomSummaryResponse>> Run(Guid cinemaId)
+    public async Task<IEnumerable<GetRoomsResponse>> Run(Guid cinemaId)
     {
         var rooms = await _roomRepository.GetRoomsByCinema(cinemaId);
         
-        return rooms.Select(r => new RoomSummaryResponse
+        return rooms.Select(r => new GetRoomsResponse
         {
             Id = r.Id,
             RoomNumber = r.RoomNumber,

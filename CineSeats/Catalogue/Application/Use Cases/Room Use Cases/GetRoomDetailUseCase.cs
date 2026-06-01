@@ -12,14 +12,14 @@ public class GetRoomDetailUseCase : IGetRoomDetailUseCase
         _roomRepository = roomRepository;
     }
     
-    public async Task<RoomDetailResponse> Run(Guid id, Guid cinemaId)
+    public async Task<GetRoomDetailResponse> Run(Guid id, Guid cinemaId)
     {
         var room = await _roomRepository.GetRoomById(id, cinemaId);
         
         if (room == null)
             throw new KeyNotFoundException("Sala não encontrada ou não pertence a este cinema.");
         
-        return new RoomDetailResponse
+        return new GetRoomDetailResponse
         {
             Id = room.Id,
             RoomNumber = room.RoomNumber,

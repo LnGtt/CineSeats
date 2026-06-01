@@ -1,43 +1,45 @@
 ﻿using CineSeats.Catalogue.Domain.Entities;
 using CineSeats.Catalogue.Domain.IRepositories;
+using CineSeats.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace CineSeats.Catalogue.Infrastructure.Repositories
 {
     public class MovieRepository : IMovieRepository
     {
-        private readonly DBContext_Mongo _database;
+        private readonly Context_Post _context;
 
-        public MovieRepository(DBContext_Mongo database)
+        public MovieRepository(Context_Post context)
         {
-            _database = database;
+            _context = context;
         }
 
-        public async Task AddMovie(Movie newMovie)
+        public async Task AddMovie(Movie movie)
         {
-            _database.Movie.AddAsync(newMovie);
-            await _database.SaveChangesAsync();
+            await _context.Movie.AddAsync(movie);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Movie>> GetMovies(Guid cinemaId)
+        public async Task<IEnumerable<Movie>> GetMovies()
         {
-            return await _database.Movie.ToListAsync();
+            return await _context.Movie.ToListAsync();
         }
 
-        public async Task<Movie> GetMovie(Guid id, Guid cinemaId)
+        public async Task<Movie> GetMovie(Guid id)
         {
-            return await _database.Movie.FindAsync(id);
+            return await _context.Movie.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task UpdateMovie(Movie updatedMovie)
+        public async Task UpdateMovie(Movie movie)
         {
-            _database.Movie.Update(updatedMovie);
-            await _database.SaveChangesAsync();
+            _context.Movie.Update(movie);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteMovie(Movie movie)
         {
-            _database.Movie.DeleteAsync(movie);
-            await _database.SaveChangesAsync();
+            _context.Movie.Remove(movie);
+            await _context.SaveChangesAsync();
         }
     }
 }

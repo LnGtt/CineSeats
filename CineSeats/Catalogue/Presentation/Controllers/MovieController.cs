@@ -46,14 +46,14 @@ public class MovieController : ControllerBase
     }
     
     [HttpPut("PutMovieById")]
-    public async Task<IActionResult> UpdateMovie(Guid id, [FromBody] UpdateMovieRequest request)
+    public async Task<IActionResult> UpdateMovie(Guid id, [FromBody] UpdateMovieDetailsRequest detailsRequest)
     {
         try
         {
-            if (id != request.Id)
+            if (id != detailsRequest.Id)
                 return BadRequest();
 
-            await _updateMovieUseCase.Run(request);
+            await _updateMovieUseCase.Run(detailsRequest);
             
             return NoContent(); 
         }

@@ -13,12 +13,12 @@ public class ListMoviesUseCase : IListMoviesUseCase
         _movieRepository = movieRepository;
     }
     
-    public async Task<IEnumerable<GetMovieSummaryResponse>> Run(Guid cinemaId)
+    public async Task<IEnumerable<GetMovieResponse>> Run(Guid cinemaId)
     {
         var movies = await _movieRepository.GetMovies(cinemaId);
         
         // O LINQ transforma a lista de domínio em lista de DTOs
-        return movies.Select(m => new GetMovieSummaryResponse
+        return movies.Select(m => new GetMovieResponse
         {
             Id = m.Id,
             Name = m.Name,

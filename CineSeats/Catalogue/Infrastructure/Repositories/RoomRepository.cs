@@ -1,45 +1,43 @@
 ﻿using CineSeats.Catalogue.Domain.Entities;
 using CineSeats.Catalogue.Domain.IRepositories;
 using CineSeats.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace CineSeats.Catalogue.Infrastructure.Repositories;
 
 public class RoomRepository : IRoomRepository
 {
-    private readonly Context_Post _database;
-    public RoomRepository(Context_Post database)
+    private readonly Context_Post _context;
+    public RoomRepository(Context_Post context)
     {
-        _database = database;
+        _context = context;
     }
     
     public async Task AddRoom(Room room)
     {
-        await _database.Rooms.AddAsync(room);
-        await _database.SaveChangesAsync();
+        await _context.Room.AddAsync(room);
+        await _context.SaveChangesAsync();
     }
-    
-    public async Task<IEnumerable<Room>> GetRoomsByCinema(Guid cinemaId)
+
+    public async Task<IEnumerable<Room>> GetRooms()
     {
-        return await _database.Rooms
-            .Where(room => room.CinemaId == cinemaId)
-            .ToListAsync();
+        return await _context.Room.ToListAsync();
     }
-    
-    public async Task<Room> GetRoomById(Guid id, Guid cinemaId)
+
+    public async Task<Room> GetRoomById(Guid id)
     {
-        return await _database.Rooms
-            .FirstOrDefaultAsync(room => room.Id == id && room.CinemaId == cinemaId);
+        return await _context.Room.FirstOrDefaultAsync(r => r.Id == id);
     }
-    
+
     public async Task UpdateRoom(Room room)
     {
-        _database.Rooms.Update(room);
-        await _database.SaveChangesAsync();
+        _context.Room.Update(room);
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteRoom(Room room)
     {
-        _database.Rooms.Remove(room);
-        await _database.SaveChangesAsync();
+        _context.Room.Remove(room);
+        await _context.SaveChangesAsync();
     }
 }

@@ -4,5 +4,5 @@ namespace CineSeats.Catalogue.Application.IUseCases.Room_IUseCases;
 
 public interface IListRoomsUseCase
 {
-    Task<IEnumerable<RoomSummaryResponse>> Run(Guid cinemaId);
+    Task<IEnumerable<GetRoomsResponse>> Run(Guid cinemaId);
 }
