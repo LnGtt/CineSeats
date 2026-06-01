@@ -17,17 +17,12 @@ public class AddMovieUseCase : IAddMovieUseCase
     public async Task Run(AddMovieRequest request)
     {
         var movie = new Movie(
-            request.CinemaId,
-            request.Name,
-            request.Genres,
-            request.AgeRestriction,
-            request.Synopsis,
-            request.Cast,
-            request.Director,
-            request.Producer,
-            request.Duration
+            request.Title,
+            request.DurationMinutes,
+            request.StartDate,
+            request.EndDate
         );
-        
+
         await _movieRepository.AddMovie(movie);
     }
 }

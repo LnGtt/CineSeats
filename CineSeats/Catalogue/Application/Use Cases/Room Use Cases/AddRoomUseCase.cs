@@ -18,8 +18,8 @@ public class AddRoomUseCase : IAddRoomUseCase
     public async Task Run(AddRoomRequest request)
     {
         var layout = request.Layout.Select(dto => new RowMap(dto.RowLetter, dto.NumberOfSeats));
-        var room = new Room(request.CinemaId, request.RoomNumber, layout);
-        
+        var room = new Room(request.RoomNumber, layout);
+
         await _roomRepository.AddRoom(room);
     }
 }

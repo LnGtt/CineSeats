@@ -15,22 +15,21 @@ public class UpdateMovieUseCase : IUpdateMovieUseCase
     
     public async Task Run(UpdateMovieDetailsRequest detailsRequest)
     {
-        var movie = await _movieRepository.GetMovie(detailsRequest.Id, detailsRequest.CinemaId);
+        var movie = await _movieRepository.GetMovie(detailsRequest.Id)
+                    ?? throw new KeyNotFoundException("Movie Not Found");
 
-        if (movie == null)
-            throw new KeyNotFoundException("Filme não encontrado ou não pertence a este cinema.");
-        
-        movie.UpdateDetails(
-            detailsRequest.Name,
-            detailsRequest.Genres,
-            detailsRequest.AgeRestriction,
-            detailsRequest.Synopsis,
-            detailsRequest.Cast,
-            detailsRequest.Director,
-            detailsRequest.Producer,
-            detailsRequest.Duration
-        );
-        
+        movie.UpdateDetails(detailsRequest.Title, detailsRequest.DurationMinutes);
+
+        await _movieRepository.UpdateMovie(movie);
+    }
+    
+    public async Task Run(UpdateMovieScheduleRequest scheduleRequest)
+    {
+        var movie = await _movieRepository.GetMovie(scheduleRequest.Id)
+                    ?? throw new KeyNotFoundException("Movie Not Found");
+
+        movie.Reschedule(scheduleRequest.StartDate, scheduleRequest.EndDate);
+
         await _movieRepository.UpdateMovie(movie);
     }
 }

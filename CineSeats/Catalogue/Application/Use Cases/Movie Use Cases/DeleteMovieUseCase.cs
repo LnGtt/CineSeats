@@ -12,15 +12,11 @@ public class DeleteMovieUseCase : IDeleteMovieUseCase
         _movieRepository = movieRepository;
     }
     
-    public async Task Run(Guid id, Guid cinemaId)
+    public async Task Run(Guid id)
     {
-        var movie = await _movieRepository.GetMovie(id, cinemaId);
-        
-        if (movie == null)
-        {
-            throw new KeyNotFoundException("Filme não encontrado ou não pertence a este cinema.");
-        }
-        
+        var movie = await _movieRepository.GetMovie(id)
+                    ?? throw new KeyNotFoundException("Movie Not Found");
+
         await _movieRepository.DeleteMovie(movie);
     }
 }

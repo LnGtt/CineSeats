@@ -13,13 +13,11 @@ public class DeleteRoomUseCase : IDeleteRoomUseCase
         _roomRepository = roomRepository;
     }
     
-    public async Task Run(Guid id, Guid cinemaId)
+    public async Task Run(Guid id)
     {
-        var room = await _roomRepository.GetRoomById(id, cinemaId);
-        
-        if (room == null)
-            throw new KeyNotFoundException("Sala não encontrada ou não pertence a este cinema.");
-        
+        var room = await _roomRepository.GetRoomById(id)
+                   ?? throw new KeyNotFoundException("Room Not Found");
+
         await _roomRepository.DeleteRoom(room);
     }
 }

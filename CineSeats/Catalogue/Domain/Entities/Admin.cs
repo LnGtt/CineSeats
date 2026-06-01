@@ -33,13 +33,19 @@ public class Admin
         Name = name;
     }
 
-    /*public void ChangeEmail(EmailVO emailAddress) //Ver como implementar verificação de email e troca partir de email
+    public void ChangeEmail(EmailVO emailAddress)
     {
-        
+        if (emailAddress == null)
+            throw new ArgumentException("Email cannot be null");
+    
+        EmailAddress = emailAddress;
     }
 
     public void ChangePassword(PasswordVO password)
     {
-        
-    }*/
+        if (password == null)
+            throw new ArgumentException("Password cannot be null");
+    
+        Password = password;
+    }
 }

@@ -15,13 +15,13 @@ public class UpdateRoomUseCase : IUpdateRoomUseCase
     
     public async Task Run(UpdateRoomRequest request)
     {
-        var room = await _roomRepository.GetRoomById(request.Id, request.CinemaId);
-
-        if (room == null)
-            throw new KeyNotFoundException("Sala não encontrada ou não pertence a este cinema.");
+        var room = await _roomRepository.GetRoomById(request.Id)
+                   ?? throw new KeyNotFoundException("Room Not Found");
         
         var newLayout = request.Layout.Select(dto => new RowMap(dto.RowLetter, dto.NumberOfSeats));
+        
         room.UpdateDetails(request.RoomNumber, newLayout);
+
         await _roomRepository.UpdateRoom(room);
     }
 }

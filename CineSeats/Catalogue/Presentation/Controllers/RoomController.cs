@@ -9,57 +9,84 @@ namespace CineSeats.Catalogue.Presentation.Controllers;
 public class RoomController : ControllerBase
 {
     private readonly IAddRoomUseCase _addRoomUseCase;
+    private readonly IGetRoomOrRoomsUseCase _getRoomOrRoomsUseCase;
     private readonly IUpdateRoomUseCase _updateRoomUseCase;
-    private readonly IListRoomsUseCase _listRoomsUseCase;
-    private readonly IGetRoomDetailUseCase _getRoomDetailUseCase;
     private readonly IDeleteRoomUseCase _deleteRoomUseCase;
     
     public RoomController(
         IAddRoomUseCase addRoomUseCase,
+        IGetRoomOrRoomsUseCase getRoomOrRoomsUseCase,
         IUpdateRoomUseCase updateRoomUseCase,
-        IListRoomsUseCase listRoomsUseCase,
-        IGetRoomDetailUseCase getRoomDetailUseCase,
         IDeleteRoomUseCase deleteRoomUseCase)
     {
         _addRoomUseCase = addRoomUseCase;
+        _getRoomOrRoomsUseCase = getRoomOrRoomsUseCase;
         _updateRoomUseCase = updateRoomUseCase;
-        _listRoomsUseCase = listRoomsUseCase;
-        _getRoomDetailUseCase = getRoomDetailUseCase;
         _deleteRoomUseCase = deleteRoomUseCase;
     }
     
-    [HttpPost("PostRoom")]
-    public async Task<IActionResult> AddRoom([FromBody] AddRoomRequest request)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] AddRoomRequest request)
     {
         try
         {
-            // Em produção, o CinemaId seria extraído do Token JWT do utilizador autenticado:
-            // request.CinemaId = Guid.Parse(User.FindFirst("CinemaId").Value);
-            
             await _addRoomUseCase.Run(request);
             return StatusCode(201);
         }
         catch (ArgumentException ex)
         {
-            return BadRequest();
+            return BadRequest(new { error = ex.Message });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500);
+            return StatusCode(500, new { error = "Erro interno no servidor ao cadastrar a sala." });
         }
     }
 
-    [HttpPut("UpdateRoom")]
-    public async Task<IActionResult> UpdateRoom(Guid id, [FromBody] UpdateRoomRequest request)
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
         try
         {
-            if (id != request.Id)
-                return BadRequest(new { error = "O ID da rota difere do ID informado no corpo da requisição." });
+            var rooms = await _getRoomOrRoomsUseCase.Run();
 
+            if (!rooms.Any())
+                return NoContent();
+
+            return Ok(rooms);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "Erro interno no servidor ao listar as salas." });
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        try
+        {
+            var room = await _getRoomOrRoomsUseCase.Run(id);
+            return Ok(room);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "Erro interno no servidor ao buscar os detalhes da sala." });
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRoomRequest request)
+    {
+        try
+        {
+            request.Id = id;
             await _updateRoomUseCase.Run(request);
-            
-            return NoContent(); 
+            return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
@@ -69,72 +96,27 @@ public class RoomController : ControllerBase
         {
             return BadRequest(new { error = ex.Message });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500, new { error = "Erro interno no servidor." });
+            return StatusCode(500, new { error = "Erro interno no servidor ao atualizar a sala." });
         }
     }
 
-    [HttpGet("GetRooms")]
-    public async Task<IActionResult> GetRooms([FromQuery] Guid cinemaId)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
         try
         {
-            if (cinemaId == Guid.Empty)
-                return BadRequest(new { error = "O CinemaId é obrigatório para listar as salas." });
-
-            var rooms = await _listRoomsUseCase.Run(cinemaId);
-
-            if (!rooms.Any())
-                return NoContent();
-            
-            return Ok(rooms);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Erro interno no servidor." });
-        }
-    }
-
-    [HttpGet("GetRoomDetail")]
-    public async Task<IActionResult> GetRoomDetail(Guid id, [FromQuery] Guid cinemaId)
-    {
-        try
-        {
-            if (cinemaId == Guid.Empty)
-                return BadRequest(new { error = "O CinemaId é obrigatório." });
-
-            var room = await _getRoomDetailUseCase.Run(id, cinemaId);
-            return Ok(room);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Erro interno no servidor." });
-        }
-    }
-
-    [HttpDelete("DeleteRoom")]
-    public async Task<IActionResult> DeleteRoom(Guid id, [FromQuery] Guid cinemaId)
-    {
-        try
-        {
-            if (cinemaId == Guid.Empty)
-                return BadRequest(new { error = "O CinemaId é obrigatório." });
-
-            await _deleteRoomUseCase.Run(id, cinemaId);
+            await _deleteRoomUseCase.Run(id);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
             return NotFound(new { error = ex.Message });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500, new { error = "Erro interno no servidor." });
+            return StatusCode(500, new { error = "Erro interno no servidor ao remover a sala." });
         }
     }
 }

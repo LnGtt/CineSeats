@@ -2,5 +2,5 @@
 
 public interface IDeleteMovieUseCase
 {
-    Task Run(Guid id, Guid cinemaId);
+    Task Run(Guid id);
 }

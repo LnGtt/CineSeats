@@ -24,4 +24,9 @@ public class AdminRepository : IAdminRepository
         _context.Admin.Update(admin);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<Admin?> GetAdminById(Guid id)
+    {
+        return await _context.Admin.FindAsync(id);
+    }
 }

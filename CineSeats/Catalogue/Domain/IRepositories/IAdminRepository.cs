@@ -6,4 +6,5 @@ public interface IAdminRepository
 {
     Task AddAdmin(Admin admin);
     Task UpdateAdmin(Admin admin);
+    Task<Admin?> GetAdminById(Guid id);
 }

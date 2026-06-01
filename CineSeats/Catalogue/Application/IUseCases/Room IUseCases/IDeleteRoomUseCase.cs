@@ -2,5 +2,5 @@
 
 public interface IDeleteRoomUseCase
 {
-    Task Run(Guid id, Guid cinemaId);
+    Task Run(Guid id);
 }

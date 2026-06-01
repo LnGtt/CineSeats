@@ -2,5 +2,6 @@
 
 public class UpdateAdminNameRequest
 {
+    public Guid Id { get; set; }
     public string Name { get; set; }
 }

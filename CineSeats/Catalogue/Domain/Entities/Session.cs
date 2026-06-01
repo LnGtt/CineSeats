@@ -5,10 +5,9 @@ public class Session
     public Guid Id { get; private set; }
     public Guid MovieId { get; private set; }
     public Guid RoomId { get; private set; }
-    public string Description { get; private set; } //exemplo: Sessão 19:30 CineMais sala 3
+    public string Description { get; private set; }
     public TimeOnly? StartTime { get; private set; }
     public decimal TicketPrice { get; private set; }
-    //public TimeOnly EndTime { get; private set; }
 
     public Session(Guid movieId, Guid roomId, string description, TimeOnly? startTime, decimal ticketPrice)
     {
@@ -45,9 +44,6 @@ public class Session
 
     public void ChangeRoom(Guid newRoom)
     {
-        if (newRoom == this.RoomId)
-            throw new ArgumentException("Room Id can't be changed");
-        
         if (newRoom == Guid.Empty)
             throw new ArgumentException("Room Id cannot be empty");
         
@@ -64,9 +60,6 @@ public class Session
 
     public void UpdateTicketPrice(decimal newTicketPrice)
     {
-        if (newTicketPrice == this.TicketPrice)
-            throw new ArgumentException("Ticket price can't be changed");
-        
         if (newTicketPrice <= 0)
             throw new ArgumentException("Ticket price can't be zero or negative");
         

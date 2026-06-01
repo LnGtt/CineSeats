@@ -9,129 +9,137 @@ namespace CineSeats.Catalogue.Presentation.Controllers;
 public class MovieController : ControllerBase
 {
     private readonly IAddMovieUseCase _addMovieUseCase;
+    private readonly IGetMovieOrMoviesUseCase _getMovieOrMoviesUseCase;
     private readonly IUpdateMovieUseCase _updateMovieUseCase;
-    private readonly IListMoviesUseCase _listMoviesUseCase;
-    private readonly IGetMovieDetailUseCase _getMovieDetailUseCase;
     private readonly IDeleteMovieUseCase _deleteMovieUseCase;
 
-    public MovieController(IAddMovieUseCase addMovieUseCase, IUpdateMovieUseCase updateMovieUseCase, IListMoviesUseCase listMoviesUseCase, IGetMovieDetailUseCase getMovieDetailUseCase, IDeleteMovieUseCase deleteMovieUseCase)
+    public MovieController(
+        IAddMovieUseCase addMovieUseCase,
+        IGetMovieOrMoviesUseCase getMovieOrMoviesUseCase,
+        IUpdateMovieUseCase updateMovieUseCase,
+        IDeleteMovieUseCase deleteMovieUseCase)
     {
         _addMovieUseCase = addMovieUseCase;
+        _getMovieOrMoviesUseCase = getMovieOrMoviesUseCase;
         _updateMovieUseCase = updateMovieUseCase;
-        _listMoviesUseCase = listMoviesUseCase;
-        _getMovieDetailUseCase = getMovieDetailUseCase;
         _deleteMovieUseCase = deleteMovieUseCase;
     }
 
-    [HttpPost("PostMovie")]
-    public async Task<IActionResult> AddMovie([FromBody] AddMovieRequest request)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] AddMovieRequest request)
     {
         try
         {
-            // Em produção com autenticação, o CinemaId viria do token JWT do Admin:
-            // request.CinemaId = Guid.Parse(User.FindFirst("CinemaId").Value);
-            
             await _addMovieUseCase.Run(request);
-            
             return StatusCode(201);
         }
         catch (ArgumentException ex)
         {
-            return BadRequest();
+            return BadRequest(new { error = ex.Message });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500);
+            return StatusCode(500, new { error = "Erro interno no servidor ao cadastrar o filme." });
         }
     }
-    
-    [HttpPut("PutMovieById")]
-    public async Task<IActionResult> UpdateMovie(Guid id, [FromBody] UpdateMovieDetailsRequest detailsRequest)
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
         try
         {
-            if (id != detailsRequest.Id)
-                return BadRequest();
-
-            await _updateMovieUseCase.Run(detailsRequest);
+            var movies = await _getMovieOrMoviesUseCase.Run();
             
-            return NoContent(); 
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound();
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500);
-        }
-    }
-    
-    [HttpGet("GetCatalogue")]
-    public async Task<IActionResult> GetCatalogue([FromQuery] Guid cinemaId)
-    {
-        try
-        {
-            if (cinemaId == Guid.Empty)
-                return BadRequest(new { error = "O CinemaId é obrigatório para listar os filmes." });
-
-            var movies = await _listMoviesUseCase.Run(cinemaId);
-
             if (!movies.Any())
                 return NoContent();
-            
+
             return Ok(movies);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500);
+            return StatusCode(500, new { error = "Erro interno no servidor ao listar o catálogo de filmes." });
         }
     }
 
-    [HttpGet("GetMovieDetails")]
-    public async Task<IActionResult> GetMovieDetail(Guid id, [FromQuery] Guid cinemaId)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
         try
         {
-            if (cinemaId == Guid.Empty)
-                return BadRequest();
-
-            var movie = await _getMovieDetailUseCase.Run(id, cinemaId);
+            var movie = await _getMovieOrMoviesUseCase.Run(id);
             return Ok(movie);
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound();
+            return NotFound(new { error = ex.Message });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500);
+            return StatusCode(500, new { error = "Erro interno no servidor ao buscar os detalhes do filme." });
         }
     }
 
-    [HttpDelete("DeleteMovieById")]
-    public async Task<IActionResult> DeleteMovie(Guid id, [FromQuery] Guid cinemaId)
+    [HttpPut("{id}/details")]
+    public async Task<IActionResult> UpdateDetails(Guid id, [FromBody] UpdateMovieDetailsRequest request)
     {
         try
         {
-            // Em produção, o cinemaId também seria extraído do Token do Admin em vez de QueryString
-            if (cinemaId == Guid.Empty)
-                return BadRequest();
-
-            await _deleteMovieUseCase.Run(id, cinemaId);
+            request.Id = id;
+            await _updateMovieUseCase.Run(request);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound();
+            return NotFound(new { error = ex.Message });
         }
-        catch (Exception ex)
+        catch (ArgumentException ex)
         {
-            return StatusCode(500);
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "Erro interno no servidor ao atualizar os dados técnicos do filme." });
+        }
+    }
+
+    [HttpPut("{id}/schedule")]
+    public async Task<IActionResult> UpdateSchedule(Guid id, [FromBody] UpdateMovieScheduleRequest request)
+    {
+        try
+        {
+            request.Id = id;
+            await _updateMovieUseCase.Run(request);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "Erro interno no servidor ao reagendar as datas do filme." });
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            await _deleteMovieUseCase.Run(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "Erro interno no servidor ao remover o filme." });
         }
     }
     
