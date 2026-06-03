@@ -23,7 +23,7 @@ public class Context_Post : DbContext
     
     public DbSet<CineSeats.Tickets.Domain.Entities.Session> Sessions { get; set; } = null!;
     public DbSet<CineSeats.Tickets.Domain.Entities.SessionSeat> SessionSeats { get; set; } = null!;
-    public DbSet<CineSeats.Tickets.Domain.Entities.tickets> Tickets { get; set; } = null!;
+    public DbSet<CineSeats.Tickets.Domain.Entities.Ticket> Tickets { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,7 +33,7 @@ public class Context_Post : DbContext
         // ==========================================
         modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.Session>().HasKey(s => s.Id);
         modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.SessionSeat>().HasKey(ss => ss.Id);
-        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.tickets>().HasKey(t => t.Id);
+        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.Ticket>().HasKey(t => t.Id);
         
         modelBuilder.Entity<CineSeats.Catalogue.Domain.Entities.Admin>().HasKey(a => a.Id);
         
@@ -44,7 +44,7 @@ public class Context_Post : DbContext
             .HasForeignKey(ss => ss.SessionId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.tickets>()
+        modelBuilder.Entity<CineSeats.Tickets.Domain.Entities.Ticket>()
             .HasIndex(t => new { t.SessionId, t.SeatNumber })
             .IsUnique();
         
