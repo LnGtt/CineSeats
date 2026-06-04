@@ -3,6 +3,7 @@ using CineSeats.Tickets.Domain.Entities;
 using CineSeats.Tickets.Domain.Enums;
 using CineSeats.Tickets.Domain.IRepositories;
 using CineSeats.Tickets.Value_Object;
+using Microsoft.EntityFrameworkCore;
 
 namespace CineSeats.Tickets.Infrastructure.Repositories;
 
