@@ -10,6 +10,14 @@ using CineSeats.Catalogue.Application.Use_Cases.Session_Use_Cases;
 using CineSeats.Catalogue.Domain.IRepositories;
 using CineSeats.Catalogue.Infrastructure.Repositories;
 using CineSeats.Infrastructure;
+using CineSeats.Tickets.Application.IUseCases.Integration_IUseCases;
+using CineSeats.Tickets.Application.IUseCases.Order_IUseCases;
+using CineSeats.Tickets.Application.IUseCases.SessionSeat_IUseCases;
+using CineSeats.Tickets.Application.Use_Cases.Order_Use_Cases;
+using CineSeats.Tickets.Application.Use_Cases.SessionSeat_Use_Cases;
+using CineSeats.Tickets.Domain.IRepositories;
+using CineSeats.Tickets.Infrastructure.Integration;
+using CineSeats.Tickets.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,12 +26,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Scoped Repositories
+//INJEÇÃO DE DEPENDÊNCIA REPOSITORIES --------------------------------
+//CATALOGUE===========================================================
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
-//Scoped Use Cases
+//TICKETS=============================================================
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<ISessionSeatRepository, SessionSeatRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//--------------------------------------------------------------------
+//INJEÇÃO DE DEPENDÊNCIA USE CASES -----------------------------------
+//CATALOGUE===========================================================
 builder.Services.AddScoped<IAddAdminUseCase, AddAdminUseCase>();
 builder.Services.AddScoped<IUpdateAdminUseCase, UpdateAdminUseCase>();
 builder.Services.AddScoped<IAddMovieUseCase, AddMovieUseCase>();
@@ -38,6 +54,11 @@ builder.Services.AddScoped<IAddSessionUseCase, AddSessionUseCase>();
 builder.Services.AddScoped<IDeleteSessionUseCase, DeleteSessionUseCase>();
 builder.Services.AddScoped<IGetSessionOrSessionsUseCase, GetSessionOrSessionsUseCase>();
 builder.Services.AddScoped<IUpdateSessionUseCase, UpdateSessionUseCase>();
+//TICKETS=============================================================
+builder.Services.AddScoped<ICatalogueService, CatalogueService>();
+builder.Services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
+builder.Services.AddScoped<IGetSessionSeatsUseCase, GetSessionSeatsUseCase>();
+//--------------------------------------------------------------------
 
 
 var postgreConnectionString = builder.Configuration.GetConnectionString("PostgreConnection");

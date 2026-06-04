@@ -18,9 +18,6 @@ public class OrderRepository : IOrderRepository
     public async Task AddOrder(Order order)
     {
         await _context.Orders.AddAsync(order);
-        
-        // Nota: O SaveChangesAsync() geralmente não é chamado no repositório no DDD.
-        // Ele deve ser chamado na camada de Application (Use Case) através de um Unit of Work.
     }
 
     public async Task<Order> GetOrder(Guid id)

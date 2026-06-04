@@ -1,5 +1,6 @@
 ﻿using CineSeats.Tickets.Application.DTOs.Order_DTOs;
 using CineSeats.Tickets.Application.DTOs.Ticket_DTOs;
+using CineSeats.Tickets.Application.IUseCases.Integration_IUseCases;
 using CineSeats.Tickets.Application.IUseCases.Order_IUseCases;
 using CineSeats.Tickets.Domain.Entities;
 using CineSeats.Tickets.Domain.IRepositories;
@@ -11,13 +12,13 @@ public class CreateOrderUseCase : ICreateOrderUseCase
 {
     private readonly IOrderRepository _orderRepository;
     private readonly ISessionSeatRepository _sessionSeatRepository;
-    private readonly ICatalogueIntegrationService _catalogueService; // Ponte com o outro Bounded Context
+    private readonly ICatalogueService _catalogueService; // Ponte com o outro Bounded Context
     private readonly IUnitOfWork _unitOfWork;
     
     public CreateOrderUseCase(
         IOrderRepository orderRepository, 
         ISessionSeatRepository sessionSeatRepository,
-        ICatalogueIntegrationService catalogueService,
+        ICatalogueService catalogueService,
         IUnitOfWork unitOfWork)
     {
         _orderRepository = orderRepository;
