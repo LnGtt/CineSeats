@@ -1,23 +1,26 @@
 ﻿using CineSeats.Tickets.Domain.Enums;
+using CineSeats.Tickets.Value_Object;
 
 namespace CineSeats.Tickets.Domain.Entities;
 
 public class Order
 {
     public Guid Id { get; private set; }
-    public string CustomerEmail { get; private set; } //Vai virar emailVO depois
+    public CustomerEmailVO CustomerEmail { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public string? MercadoPagoId { get; private set; } //Id da transação do mercado pago
     public OrderStatus Status { get; private set; }
     
     private readonly List<Ticket> _tickets = new();
     public IReadOnlyCollection<Ticket> Tickets => _tickets.AsReadOnly();
+    public decimal TotalPrice => _tickets.Sum(t => t.Price);
     
     protected Order() { }
     
-    public Order(string customerEmail)
+    public Order(CustomerEmailVO customerEmail)
     {
-        //colocar validação de email depois, pois vou ter que reutilizar o emailVO do outro domínio, e pra não quebrar as coisas, vou deixar p depois
+        if (customerEmail == null)
+            throw new ArgumentNullException(nameof(customerEmail), "The customer email cannot be null");
         
         Id = Guid.NewGuid();
         CustomerEmail = customerEmail;

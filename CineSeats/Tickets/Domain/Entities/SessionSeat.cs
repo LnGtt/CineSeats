@@ -14,8 +14,6 @@ public class SessionSeat
     public Guid Version { get; private set; }
     
     protected SessionSeat() { }
-    
-    //public Session Session { get; set; } = null!;
 
     public SessionSeat(Guid sessionId, string seatNumber)
     {

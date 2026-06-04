@@ -2,20 +2,11 @@
 
 public class Ticket
 {
-    /*public Guid Id { get; set; }
-    public Guid SessionId { get; set; }
-    public string SeatNumber { get; set; } = string.Empty;
-    public string UserId { get; set; } = string.Empty; // ID do usuário que comprou
-    public DateTime PurchasedAt { get; set; }
-    public string ReservationCode { get; set; } = string.Empty; // Código do ingresso (QR Code)
-
-    public Session Session { get; set; } = null!;*/
-    
     public Guid Id { get; private set; }
     public Guid OrderId { get; private set; }
     public Guid SessionId { get; private set; }
-    public string SeatNumber { get; private set; }
-    public decimal Price { get; private set; }
+    public string SeatNumber { get; private set; } //Método para mudar não deve existir, quebraria concorrência
+    public decimal Price { get; private set; } //Por motivos de segurança, não deve haver métodos para mudar preço, o ticket deve ser cancelado por completo e criado outro
     public string? QrCodeString { get; private set; }
     
     protected Ticket() { }

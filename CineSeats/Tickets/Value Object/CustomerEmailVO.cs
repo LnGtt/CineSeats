@@ -1,10 +1,9 @@
-namespace CineSeats.Catalogue.ValueObject;
+﻿namespace CineSeats.Tickets.Value_Object;
 
-public class EmailVO
+public class CustomerEmailVO
 {
     public string EmailAddress { get; private set; }
-
-    public EmailVO(string emailAddress)
+    public CustomerEmailVO(string emailAddress)
     {
         if (string.IsNullOrWhiteSpace(emailAddress))
         {
