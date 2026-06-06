@@ -18,6 +18,7 @@ using CineSeats.Tickets.Application.Use_Cases.SessionSeat_Use_Cases;
 using CineSeats.Tickets.Domain.IRepositories;
 using CineSeats.Tickets.Infrastructure.Integration;
 using CineSeats.Tickets.Infrastructure.Repositories;
+using CineSeats.Tickets.Domain.IServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +60,9 @@ builder.Services.AddScoped<ICatalogueService, CatalogueService>();
 builder.Services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
 builder.Services.AddScoped<IGetSessionSeatsUseCase, GetSessionSeatsUseCase>();
 //--------------------------------------------------------------------
+//pagSeguro
+builder.Services.AddHttpClient<IPaymentService, PagSeguroService>();
+builder.Services.AddScoped<IQrCodeService, QrCodeService>();
 
 
 var postgreConnectionString = builder.Configuration.GetConnectionString("PostgreConnection");
