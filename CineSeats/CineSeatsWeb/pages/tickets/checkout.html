@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSeats - Checkout</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="container">
+            <a href="../../index.html">CineSeats</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Checkout</h1>
+        
+        <div id="error-container" class="alert alert-error hidden"></div>
+        
+        <div id="checkout-form-container" class="card">
+            <h3>Order Summary</h3>
+            <p><strong>Seats:</strong> <span id="summary-seats">...</span></p>
+            <hr style="margin: 1rem 0; border: none; border-top: 1px solid var(--color-border);">
+            
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label class="form-label" for="customerEmail">Email Address</label>
+                    <input type="email" id="customerEmail" class="form-control" required placeholder="you@example.com">
+                </div>
+                <button type="submit" class="btn" id="btn-submit-order" style="width: 100%;">Complete Order</button>
+            </form>
+        </div>
+
+        <div id="success-container" class="card hidden" style="text-align: center;">
+            <div class="alert alert-success">
+                <h2>Order Successful!</h2>
+                <p>Your tickets have been reserved.</p>
+            </div>
+            <div id="qr-code-placeholder" style="margin: 2rem auto; width: 200px; height: 200px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc;">
+                <!-- We will display a text string for the QR as requested -->
+                QR CODE
+            </div>
+            <p id="qr-string" style="font-family: monospace; word-break: break-all; margin-bottom: 2rem;"></p>
+            <a href="../../index.html" class="btn">Back to Home</a>
+        </div>
+    </main>
+
+    <script type="module" src="../../js/ui/domManager.js"></script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+import { catalogueApiService } from '../services/catalogueApiService.js';
+
+const getPageName = () => {
+    const path = window.location.pathname;
+    if (path.endsWith('login.html')) return 'login';
+    if (path.endsWith('dashboard.html')) return 'dashboard';
+    return 'unknown';
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const page = getPageName();
+
+    if (page === 'login') {
+        initLogin();
+    } else if (page === 'dashboard') {
+        initDashboard();
+    }
+});
+
+// --- LOGIN LOGIC ---
+function initLogin() {
+    const form = document.getElementById('login-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errContainer = document.getElementById('login-error');
+        
+        try {
+            errContainer.classList.add('hidden');
+            await catalogueApiService.login(email, password);
+            window.location.href = 'dashboard.html';
+        } catch (err) {
+            errContainer.textContent = err.message || 'Login failed';
+            errContainer.classList.remove('hidden');
+        }
+    });
+}
+
+// --- DASHBOARD LOGIC ---
+let dashboardState = {
+    rooms: [],
+    movies: [],
+    sessions: []
+};
+
+function initDashboard() {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Sidebar navigation
+    document.querySelectorAll('.nav-link[data-target]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.getElementById(e.target.dataset.target).classList.add('active');
+        });
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+        localStorage.removeItem('adminToken');
+        window.location.href = 'login.html';
+    });
+
+    // Load initial data
+    loadRooms();
+    loadMovies();
+    loadSessions();
+
+    // Setup forms
+    document.getElementById('form-room').addEventListener('submit', handleRoomSubmit);
+    document.getElementById('form-movie').addEventListener('submit', handleMovieSubmit);
+    document.getElementById('form-session-batch').addEventListener('submit', handleSessionBatchSubmit);
+}
+
+function showMsg(type, msg) {
+    const err = document.getElementById('dashboard-error');
+    const succ = document.getElementById('dashboard-success');
+    err.classList.add('hidden');
+    succ.classList.add('hidden');
+
+    if (type === 'error') {
+        err.textContent = msg;
+        err.classList.remove('hidden');
+    } else {
+        succ.textContent = msg;
+        succ.classList.remove('hidden');
+        setTimeout(() => succ.classList.add('hidden'), 3000);
+    }
+}
+
+// --- ROOMS ---
+async function loadRooms() {
+    try {
+        const rooms = await catalogueApiService.getRooms();
+        dashboardState.rooms = rooms;
+        renderRoomsTable();
+        updateRoomSelects();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function renderRoomsTable() {
+    const tbody = document.querySelector('#table-rooms tbody');
+    tbody.innerHTML = '';
+    if (!dashboardState.rooms || dashboardState.rooms.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">No rooms found.</td></tr>';
+        return;
+    }
+    dashboardState.rooms.forEach(r => {
+        tbody.innerHTML += `<tr><td>${r.id || '-'}</td><td>${r.name}</td><td>${r.capacity}</td></tr>`;
+    });
+}
+
+async function handleRoomSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('roomName').value;
+    const capacity = parseInt(document.getElementById('roomCapacity').value, 10);
+    try {
+        await catalogueApiService.createRoom(name, capacity);
+        showMsg('success', 'Room created successfully');
+        e.target.reset();
+        loadRooms(); // reload
+    } catch (err) {
+        showMsg('error', err.message);
+    }
+}
+
+// --- MOVIES ---
+async function loadMovies() {
+    try {
+        const movies = await catalogueApiService.getMovies();
+        dashboardState.movies = movies;
+        renderMoviesTable();
+        updateMovieSelects();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function renderMoviesTable() {
+    const tbody = document.querySelector('#table-movies tbody');
+    tbody.innerHTML = '';
+    if (!dashboardState.movies || dashboardState.movies.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">No movies found.</td></tr>';
+        return;
+    }
+    dashboardState.movies.forEach(m => {
+        tbody.innerHTML += `<tr><td>${m.id || '-'}</td><td>${m.title}</td><td>${m.duration}</td></tr>`;
+    });
+}
+
+async function handleMovieSubmit(e) {
+    e.preventDefault();
+    const title = document.getElementById('movieTitle').value;
+    const desc = document.getElementById('movieDesc').value;
+    const duration = parseInt(document.getElementById('movieDuration').value, 10);
+    try {
+        await catalogueApiService.createMovie(title, desc, duration);
+        showMsg('success', 'Movie created successfully');
+        e.target.reset();
+        loadMovies();
+    } catch (err) {
+        showMsg('error', err.message);
+    }
+}
+
+// --- SESSIONS ---
+async function loadSessions() {
+    try {
+        const sessions = await catalogueApiService.getSessions();
+        dashboardState.sessions = sessions;
+        renderSessionsTable();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function renderSessionsTable() {
+    const tbody = document.querySelector('#table-sessions tbody');
+    tbody.innerHTML = '';
+    if (!dashboardState.sessions || dashboardState.sessions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">No sessions found.</td></tr>';
+        return;
+    }
+    dashboardState.sessions.forEach(s => {
+        const d = new Date(s.startTime);
+        tbody.innerHTML += `<tr>
+            <td>${s.id || '-'}</td>
+            <td>${s.movieId}</td>
+            <td>${s.roomId}</td>
+            <td>${d.toLocaleString()}</td>
+        </tr>`;
+    });
+}
+
+function updateRoomSelects() {
+    const select = document.getElementById('batchRoomId');
+    if (!select) return;
+    select.innerHTML = '<option value="">Select Room...</option>';
+    dashboardState.rooms.forEach(r => {
+        select.innerHTML += `<option value="${r.id}">${r.name}</option>`;
+    });
+}
+
+function updateMovieSelects() {
+    const select = document.getElementById('batchMovieId');
+    if (!select) return;
+    select.innerHTML = '<option value="">Select Movie...</option>';
+    dashboardState.movies.forEach(m => {
+        select.innerHTML += `<option value="${m.id}">${m.title}</option>`;
+    });
+}
+
+async function handleSessionBatchSubmit(e) {
+    e.preventDefault();
+    const movieId = document.getElementById('batchMovieId').value;
+    const roomId = document.getElementById('batchRoomId').value;
+    const startDateStr = document.getElementById('batchStartDate').value;
+    const endDateStr = document.getElementById('batchEndDate').value;
+    const showtimesStr = document.getElementById('batchShowtimes').value;
+
+    const btn = document.getElementById('btn-create-batch');
+    btn.disabled = true;
+    btn.textContent = 'Generating...';
+
+    try {
+        const startDate = new Date(startDateStr + 'T00:00:00');
+        const endDate = new Date(endDateStr + 'T00:00:00');
+        
+        if (endDate < startDate) {
+            throw new Error('End date must be after start date');
+        }
+
+        const times = showtimesStr.split(',').map(t => t.trim());
+        const promises = [];
+
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            const dateString = d.toISOString().split('T')[0];
+            
+            for (const time of times) {
+                // e.g., "2023-10-01T14:30:00"
+                const startTime = `${dateString}T${time}:00`;
+                promises.push(catalogueApiService.createSession(movieId, roomId, startTime));
+            }
+        }
+
+        // Wait for all posts to finish
+        await Promise.all(promises);
+        
+        showMsg('success', `Successfully created ${promises.length} sessions.`);
+        e.target.reset();
+        loadSessions();
+
+    } catch (err) {
+        showMsg('error', err.message);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Generate Batch';
+    }
+}

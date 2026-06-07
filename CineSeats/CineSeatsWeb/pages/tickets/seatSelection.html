@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSeats - Select Seats</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="container">
+            <a href="../../index.html">CineSeats</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Select Your Seats</h1>
+        
+        <div id="error-container" class="alert alert-error hidden"></div>
+        
+        <div class="card">
+            <h3 id="session-info">Loading session info...</h3>
+        </div>
+
+        <div id="seats-loading">Loading seats...</div>
+        
+        <div id="seats-container" class="hidden">
+            <div class="screen">SCREEN</div>
+            <div id="seat-grid" class="seat-grid">
+                <!-- Seats will be rendered here -->
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item"><div class="seat available"></div> Available</div>
+                <div class="legend-item"><div class="seat selected"></div> Selected</div>
+                <div class="legend-item"><div class="seat sold"></div> Sold/Reserved</div>
+            </div>
+        </div>
+
+        <div id="selection-summary" class="card hidden">
+            <h3>Selected Seats: <span id="selected-seats-list">None</span></h3>
+            <button id="btn-checkout" class="btn btn-disabled" disabled>Proceed to Checkout</button>
+        </div>
+    </main>
+
+    <style>
+        .screen {
+            background-color: #ccc;
+            height: 40px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            transform: perspective(200px) rotateX(-5deg);
+            box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+        }
+        .seat-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+        .seat {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px 8px 4px 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.2s;
+            border: 1px solid #ccc;
+        }
+        .seat.available {
+            background-color: #fff;
+            color: #333;
+        }
+        .seat.available:hover {
+            border-color: var(--color-primary);
+        }
+        .seat.selected {
+            background-color: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
+        }
+        .seat.sold, .seat.reserved {
+            background-color: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+            border-color: #e0e0e0;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .legend-item .seat {
+            cursor: default;
+        }
+    </style>
+
+    <script type="module" src="../../js/ui/domManager.js"></script>
+</body>
+</html>
