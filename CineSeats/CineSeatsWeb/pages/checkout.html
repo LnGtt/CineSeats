@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSeats - Checkout</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>CineSeats</h1>
+        <p>Checkout & Payment</p>
+    </header>
+
+    <main>
+        <div id="checkoutContainer" class="checkout-form">
+            <div id="summaryContainer" class="summary-box">
+                <!-- Summary will be rendered here by JS -->
+            </div>
+            
+            <label for="customerEmail">Email Address:</label>
+            <input type="email" id="customerEmail" placeholder="Enter your email to receive the ticket" required>
+            
+            <button id="btnPay" class="btn-primary">Pay / Confirm</button>
+        </div>
+
+        <div id="successContainer">
+            <!-- Success message will be rendered here -->
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="seatSelection.html" id="linkBack" style="color: var(--text-color);">Back to Seats</a>
+        </div>
+    </main>
+
+    <script type="module" src="../app.js"></script>
+</body>
+</html>
