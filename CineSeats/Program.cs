@@ -64,11 +64,22 @@ builder.Services.AddScoped<IGetSessionSeatsUseCase, GetSessionSeatsUseCase>();
 builder.Services.AddHttpClient<IPaymentService, PagSeguroService>();
 builder.Services.AddScoped<IQrCodeService, QrCodeService>();
 
+//builder.Services.AddControllers(); Parece que é importante???????
 
 var postgreConnectionString = builder.Configuration.GetConnectionString("PostgreConnection");
 builder.Services.AddDbContext<Context_Post>(options =>
     options.UseNpgsql(postgreConnectionString)
 );
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -81,6 +92,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
+
+//app.MapControllers(); ????
 
 app.Run();
 
