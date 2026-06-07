@@ -1,6 +1,7 @@
 ﻿using CineSeats.Tickets.Domain.Enums;
 using CineSeats.Tickets.Value_Object;
 
+
 namespace CineSeats.Tickets.Domain.Entities;
 
 public class Order

@@ -50,4 +50,11 @@ public class OrderRepository : IOrderRepository
         _context.Orders.Update(order);
         
     }
+    
+    public async Task<Order?> GetOrderByTransactionId(string transactionId)
+    {
+        return await _context.Orders
+            .Include(o => o.Tickets)
+            .FirstOrDefaultAsync(o => o.MercadoPagoId == transactionId);
+    }
 }

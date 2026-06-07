@@ -11,4 +11,6 @@ public interface IOrderRepository
     Task<IEnumerable<Order>> GetOrdersByCustomerEmail(CustomerEmailVO email);
     Task<IEnumerable<Order>> GetOrdersByStatus(OrderStatus status);
     Task UpdateOrder(Order order);
+    
+    Task<Order?> GetOrderByTransactionId(string transactionId);
 }

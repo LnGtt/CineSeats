@@ -29,7 +29,6 @@
       <Folder Include="Tickets\Application\IUseCases\Ticket IUseCases\" />
       <Folder Include="Tickets\Application\Use Cases\Ticket Use Cases\" />
       <Folder Include="Tickets\Infrastructure\Persistance\" />
-      <Folder Include="Tickets\Presentation\Controllers\" />
     </ItemGroup>
 
     <ItemGroup>
