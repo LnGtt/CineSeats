@@ -159,111 +159,85 @@ async function initSeatSelection() {
 
     const movie = JSON.parse(movieJson);
 
-    document.getElementById('movie-title').textContent = movie.title;
-    // O erro do Undefined corrigido aqui:
-    document.getElementById('movie-duration').textContent = `${movie.durationMinutes} minutos`;
+    document.getElementById('session-info').textContent = `${movie.title} - ${movie.durationMinutes} minutos`;
 
     try {
         const seats = await ticketsApiService.getSessionSeats(sessionId);
         renderSeatsGrid(seats);
     } catch (err) {
-        const container = document.getElementById('seats-container');
-        if (container) container.innerHTML = `<p style="color:red;">Erro ao carregar mapa de cadeiras. Verifique se a API está ligada.</p>`;
+        const loading = document.getElementById('seats-loading');
+        if (loading) {
+            loading.textContent = 'Erro ao carregar mapa de cadeiras. Verifique se a API está ligada.';
+            loading.style.color = 'red';
+        }
+    }
+
+    const btnCheckout = document.getElementById('btn-checkout');
+    if (btnCheckout) {
+        btnCheckout.addEventListener('click', () => {
+            sessionStorage.setItem('currentSessionId', sessionId);
+            sessionStorage.setItem('selectedSeats', JSON.stringify(seatState.selectedSeats));
+            window.location.href = 'checkout.html';
+        });
     }
 }
 
 function renderSeatsGrid(seats) {
     const container = document.getElementById('seats-container');
-    if (!container) return;
+    const loading = document.getElementById('seats-loading');
+    if (!container || !loading) return;
 
-    container.innerHTML = ''; // Limpa a mensagem "Loading seats..."
+    loading.classList.add('hidden');
+    container.classList.remove('hidden');
+    
+    const summary = document.getElementById('selection-summary');
+    if (summary) summary.classList.remove('hidden');
+
+    const grid = document.getElementById('seat-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
 
     if (!seats || seats.length === 0) {
-        container.innerHTML = '<p>Nenhuma cadeira configurada para esta sessão.</p>';
+        grid.innerHTML = '<p>Nenhuma cadeira configurada para esta sessão.</p>';
         return;
     }
 
-    // Cria um mapa/grid responsivo de cadeiras (10 lugares por fila)
-    const grid = document.createElement('div');
-    grid.style.display = 'grid';
-    grid.style.gridTemplateColumns = 'repeat(10, 1fr)';
-    grid.style.gap = '10px';
-    grid.style.marginTop = '20px';
-
     seats.forEach(seat => {
-        const btn = document.createElement('button');
-        btn.textContent = seat.seatNumber;
+        const div = document.createElement('div');
+        
+        // Mapeia o status em português da API para as classes CSS
+        let cssClass = 'available';
+        if (seat.status === 'Vendido') cssClass = 'sold';
+        if (seat.status === 'Reservado') cssClass = 'reserved';
 
-        // Estilo Base
-        btn.style.padding = '15px 5px';
-        btn.style.border = 'none';
-        btn.style.borderRadius = '5px';
-        btn.style.fontWeight = 'bold';
-        btn.style.cursor = seat.status === 'Available' ? 'pointer' : 'not-allowed';
+        div.className = `seat ${cssClass}`;
+        div.textContent = seat.seatNumber;
 
-        // Cores baseadas no Status da Cadeira
-        if (seat.status !== 'Available') {
-            btn.style.backgroundColor = '#dc3545'; // Vermelho (Vendido)
-            btn.style.color = 'white';
-            btn.disabled = true;
-        } else {
-            btn.style.backgroundColor = '#28a745'; // Verde (Disponível)
-            btn.style.color = 'white';
-
-            // Lógica ao clicar numa cadeira livre
-            btn.addEventListener('click', () => {
-                if (seatState.selectedSeats.includes(seat.seatNumber)) {
-                    // Desmarca
-                    seatState.selectedSeats = seatState.selectedSeats.filter(s => s !== seat.seatNumber);
-                    btn.style.backgroundColor = '#28a745'; // Volta a ficar Verde
-                } else {
-                    // Seleciona
+        if (cssClass === 'available') {
+            div.addEventListener('click', () => {
+                const index = seatState.selectedSeats.indexOf(seat.seatNumber);
+                if (index === -1) {
                     seatState.selectedSeats.push(seat.seatNumber);
-                    btn.style.backgroundColor = '#007bff'; // Fica Azul
+                    div.classList.remove('available');
+                    div.classList.add('selected');
+                } else {
+                    seatState.selectedSeats.splice(index, 1);
+                    div.classList.remove('selected');
+                    div.classList.add('available');
                 }
-                updateSeatSummary();
+                updateCheckoutButton();
             });
         }
-        grid.appendChild(btn);
+        grid.appendChild(div);
     });
-
-    container.appendChild(grid);
-}
-
-function updateSeatSummary() {
-    const summarySpan = document.getElementById('selected-seats-summary');
-    const checkoutBtn = document.getElementById('btn-proceed-checkout'); // Confirme se o ID do botão no seu HTML é este
-
-    if (summarySpan) {
-        summarySpan.textContent = seatState.selectedSeats.length > 0
-            ? seatState.selectedSeats.join(', ')
-            : 'Nenhuma selecionada';
-    }
-
-    if (checkoutBtn) {
-        // Bloqueia o botão de pagar se não tiver escolhido cadeiras
-        checkoutBtn.disabled = seatState.selectedSeats.length === 0;
-    }
-}
-
-function toggleSeatSelection(seatNumber, element) {
-    const index = seatState.selectedSeats.indexOf(seatNumber);
-    if (index === -1) {
-        seatState.selectedSeats.push(seatNumber);
-        element.classList.remove('available');
-        element.classList.add('selected');
-    } else {
-        seatState.selectedSeats.splice(index, 1);
-        element.classList.remove('selected');
-        element.classList.add('available');
-    }
-    updateCheckoutButton();
 }
 
 function updateCheckoutButton() {
     const btn = document.getElementById('btn-checkout');
     const list = document.getElementById('selected-seats-list');
     
+    if (!btn || !list) return;
+
     if (seatState.selectedSeats.length > 0) {
         list.textContent = seatState.selectedSeats.join(', ');
         btn.classList.remove('btn-disabled');
