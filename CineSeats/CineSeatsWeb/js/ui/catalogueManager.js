@@ -1,5 +1,4 @@
 import { catalogueApiService } from '../services/catalogueApiService.js';
-
 const getPageName = () => {
     const path = window.location.pathname;
     if (path.endsWith('login.html')) return 'login';
@@ -47,11 +46,7 @@ let dashboardState = {
 };
 
 function initDashboard() {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-        window.location.href = 'login.html';
-        return;
-    }
+
 
     // Sidebar navigation
     document.querySelectorAll('.nav-link[data-target]').forEach(link => {
@@ -65,9 +60,13 @@ function initDashboard() {
     });
 
     document.getElementById('btn-logout').addEventListener('click', () => {
-        localStorage.removeItem('adminToken');
         window.location.href = 'login.html';
     });
+
+    const movieSelect = document.getElementById('batchMovieId');
+    if (movieSelect) {
+        movieSelect.addEventListener('change', loadSessions);
+    }
 
     // Load initial data
     loadRooms();
@@ -112,20 +111,29 @@ function renderRoomsTable() {
     const tbody = document.querySelector('#table-rooms tbody');
     tbody.innerHTML = '';
     if (!dashboardState.rooms || dashboardState.rooms.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3">No rooms found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="2">No rooms found.</td></tr>';
         return;
     }
     dashboardState.rooms.forEach(r => {
-        tbody.innerHTML += `<tr><td>${r.id || '-'}</td><td>${r.name}</td><td>${r.capacity}</td></tr>`;
+        tbody.innerHTML += `<tr><td>${r.id || '-'}</td><td>${r.roomNumber || r.name || '-'}</td></tr>`;
     });
 }
 
 async function handleRoomSubmit(e) {
     e.preventDefault();
-    const name = document.getElementById('roomName').value;
-    const capacity = parseInt(document.getElementById('roomCapacity').value, 10);
+    const roomNumber = parseInt(document.getElementById('roomNumber').value, 10);
+    const layoutStr = document.getElementById('roomLayout').value;
     try {
-        await catalogueApiService.createRoom(name, capacity);
+        const layout = layoutStr.split(',').map(item => {
+            const parts = item.split(':');
+            if (parts.length !== 2) throw new Error("Invalid layout format. Use Row:Seats, e.g., A:10, B:15");
+            const rowLetter = parts[0].trim();
+            const numberOfSeats = parseInt(parts[1].trim(), 10);
+            if (!rowLetter || isNaN(numberOfSeats)) throw new Error("Invalid layout format");
+            return { rowLetter, numberOfSeats };
+        });
+
+        await catalogueApiService.createRoom(roomNumber, layout);
         showMsg('success', 'Room created successfully');
         e.target.reset();
         loadRooms(); // reload
@@ -150,21 +158,22 @@ function renderMoviesTable() {
     const tbody = document.querySelector('#table-movies tbody');
     tbody.innerHTML = '';
     if (!dashboardState.movies || dashboardState.movies.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3">No movies found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5">No movies found.</td></tr>';
         return;
     }
     dashboardState.movies.forEach(m => {
-        tbody.innerHTML += `<tr><td>${m.id || '-'}</td><td>${m.title}</td><td>${m.duration}</td></tr>`;
+        tbody.innerHTML += `<tr><td>${m.id || '-'}</td><td>${m.title}</td><td>${m.durationMinutes || m.duration || '-'}</td><td>${m.startDate || '-'}</td><td>${m.endDate || '-'}</td></tr>`;
     });
 }
 
 async function handleMovieSubmit(e) {
     e.preventDefault();
     const title = document.getElementById('movieTitle').value;
-    const desc = document.getElementById('movieDesc').value;
-    const duration = parseInt(document.getElementById('movieDuration').value, 10);
+    const durationMinutes = parseInt(document.getElementById('movieDuration').value, 10);
+    const startDate = document.getElementById('movieStartDate').value;
+    const endDate = document.getElementById('movieEndDate').value;
     try {
-        await catalogueApiService.createMovie(title, desc, duration);
+        await catalogueApiService.createMovie(title, durationMinutes, startDate, endDate);
         showMsg('success', 'Movie created successfully');
         e.target.reset();
         loadMovies();
@@ -175,12 +184,23 @@ async function handleMovieSubmit(e) {
 
 // --- SESSIONS ---
 async function loadSessions() {
+    // Pega o ID do filme selecionado na lista suspensa do formulário
+    const movieId = document.getElementById('batchMovieId').value;
+    
+    if (!movieId) {
+        dashboardState.sessions = [];
+        renderSessionsTable();
+        return;
+    }
+
     try {
-        const sessions = await catalogueApiService.getSessions();
-        dashboardState.sessions = sessions;
+        // Busca apenas as sessões do filme escolhido
+        dashboardState.sessions = await catalogueApiService.getSessionsByMovie(movieId);
         renderSessionsTable();
     } catch (err) {
-        console.error(err);
+        console.error('Failed to load sessions', err);
+        dashboardState.sessions = [];
+        renderSessionsTable();
     }
 }
 
@@ -188,16 +208,16 @@ function renderSessionsTable() {
     const tbody = document.querySelector('#table-sessions tbody');
     tbody.innerHTML = '';
     if (!dashboardState.sessions || dashboardState.sessions.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4">No sessions found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5">No sessions found.</td></tr>';
         return;
     }
     dashboardState.sessions.forEach(s => {
-        const d = new Date(s.startTime);
         tbody.innerHTML += `<tr>
             <td>${s.id || '-'}</td>
             <td>${s.movieId}</td>
             <td>${s.roomId}</td>
-            <td>${d.toLocaleString()}</td>
+            <td>${s.startTime || '-'}</td>
+            <td>$${(s.ticketPrice || 0).toFixed(2)}</td>
         </tr>`;
     });
 }
@@ -207,7 +227,7 @@ function updateRoomSelects() {
     if (!select) return;
     select.innerHTML = '<option value="">Select Room...</option>';
     dashboardState.rooms.forEach(r => {
-        select.innerHTML += `<option value="${r.id}">${r.name}</option>`;
+        select.innerHTML += `<option value="${r.id}">${r.roomNumber || r.name}</option>`;
     });
 }
 
@@ -224,39 +244,22 @@ async function handleSessionBatchSubmit(e) {
     e.preventDefault();
     const movieId = document.getElementById('batchMovieId').value;
     const roomId = document.getElementById('batchRoomId').value;
-    const startDateStr = document.getElementById('batchStartDate').value;
-    const endDateStr = document.getElementById('batchEndDate').value;
-    const showtimesStr = document.getElementById('batchShowtimes').value;
+    const description = document.getElementById('sessionDescription').value;
+    let startTime = document.getElementById('sessionStartTime').value;
+    const ticketPrice = parseFloat(document.getElementById('sessionTicketPrice').value);
 
     const btn = document.getElementById('btn-create-batch');
     btn.disabled = true;
     btn.textContent = 'Generating...';
 
     try {
-        const startDate = new Date(startDateStr + 'T00:00:00');
-        const endDate = new Date(endDateStr + 'T00:00:00');
-        
-        if (endDate < startDate) {
-            throw new Error('End date must be after start date');
+        if (startTime && startTime.split(':').length === 2) {
+            startTime += ':00'; // Make it "14:30:00" for TimeOnly if required
         }
 
-        const times = showtimesStr.split(',').map(t => t.trim());
-        const promises = [];
-
-        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-            const dateString = d.toISOString().split('T')[0];
-            
-            for (const time of times) {
-                // e.g., "2023-10-01T14:30:00"
-                const startTime = `${dateString}T${time}:00`;
-                promises.push(catalogueApiService.createSession(movieId, roomId, startTime));
-            }
-        }
-
-        // Wait for all posts to finish
-        await Promise.all(promises);
+        await catalogueApiService.createSession(movieId, roomId, description, startTime, ticketPrice);
         
-        showMsg('success', `Successfully created ${promises.length} sessions.`);
+        showMsg('success', `Session created successfully.`);
         e.target.reset();
         loadSessions();
 
@@ -264,6 +267,6 @@ async function handleSessionBatchSubmit(e) {
         showMsg('error', err.message);
     } finally {
         btn.disabled = false;
-        btn.textContent = 'Generate Batch';
+        btn.textContent = 'Create Session';
     }
 }

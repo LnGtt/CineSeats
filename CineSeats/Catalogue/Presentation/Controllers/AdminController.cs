@@ -103,4 +103,18 @@ public class AdminController : ControllerBase
             return StatusCode(500, new { error = "Erro interno no servidor ao atualizar a senha." });
         }
     }
+    
+    //arrumar depois
+    [HttpPost("login")] //improvisado, esquecemos dos métodos de login
+    public IActionResult Login([FromBody] LoginRequest request)
+    {
+        // Bypass
+        return Ok(new { success = true, message = "Login liberado" });
+    }
+}
+//DEPOIS ARRUMAR
+public class LoginRequest //improvisado
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
 }

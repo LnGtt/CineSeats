@@ -1,26 +1,15 @@
-export const BASE_URL = 'https://localhost:7198/api';
+export const BASE_URL = 'http://localhost:5242/api';
 
 /**
  * Core fetch wrapper.
  * @param {string} endpoint - The API endpoint starting with '/'
  * @param {object} options - Fetch options (method, body, headers, etc)
- * @param {boolean} requiresAuth - Whether to inject Admin JWT
  */
-export async function fetchData(endpoint, options = {}, requiresAuth = false) {
+export async function fetchData(endpoint, options = {}) {
     const defaultHeaders = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     };
-
-    if (requiresAuth) {
-        const token = localStorage.getItem('adminToken');
-        if (token) {
-            defaultHeaders['Authorization'] = `Bearer ${token}`;
-        } else {
-            // If strictly required and no token, we could redirect to login immediately
-            console.warn('Authentication token missing for protected route');
-        }
-    }
 
     const config = {
         ...options,
@@ -40,7 +29,7 @@ export async function fetchData(endpoint, options = {}, requiresAuth = false) {
         
         if (response.status === 401 || response.status === 403) {
             // Handle unauthorized (redirect to login if needed)
-            if (requiresAuth && window.location.pathname.includes('/catalogue/')) {
+            if (window.location.pathname.includes('/catalogue/')) {
                 window.location.href = '/CineSeatsWeb/pages/catalogue/login.html';
             }
             throw new Error('Unauthorized');

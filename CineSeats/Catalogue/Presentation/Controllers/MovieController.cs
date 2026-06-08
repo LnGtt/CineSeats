@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CineSeats.Catalogue.Presentation.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class MovieController : ControllerBase
 {
     private readonly IAddMovieUseCase _addMovieUseCase;

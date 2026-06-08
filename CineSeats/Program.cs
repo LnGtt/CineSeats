@@ -65,10 +65,27 @@ builder.Services.AddHttpClient<IPaymentService, PagSeguroService>();
 builder.Services.AddScoped<IQrCodeService, QrCodeService>();
 
 
+/*
 var postgreConnectionString = builder.Configuration.GetConnectionString("PostgreConnection");
 builder.Services.AddDbContext<Context_Post>(options =>
     options.UseNpgsql(postgreConnectionString)
 );
+*/
+
+builder.Services.AddDbContext<Context_Post>(options =>
+    options.UseInMemoryDatabase("CineSeatsDatabase")
+);
+
+//FALTOU ISSO TAMBEM
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -79,7 +96,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+
+// PARECE QUE FALTOU ISSO
+app.UseCors("AllowFrontend");
+app.MapControllers();
 
 
 app.Run();

@@ -42,12 +42,12 @@
                 <form id="form-room">
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label" for="roomName">Name</label>
-                            <input type="text" id="roomName" class="form-control" required placeholder="e.g. Room A">
+                            <label class="form-label" for="roomNumber">Room Number</label>
+                            <input type="number" id="roomNumber" class="form-control" required placeholder="e.g. 1">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="roomCapacity">Capacity</label>
-                            <input type="number" id="roomCapacity" class="form-control" required placeholder="e.g. 50">
+                            <label class="form-label" for="roomLayout">Layout (Row:Seats, e.g. A:10, B:15)</label>
+                            <input type="text" id="roomLayout" class="form-control" required placeholder="A:10, B:15">
                         </div>
                         <div class="form-group" style="display: flex; align-items: flex-end;">
                             <button type="submit" class="btn">Create Room</button>
@@ -57,8 +57,8 @@
             </div>
             <div class="table-card table-wrapper">
                 <table id="table-rooms">
-                    <thead><tr><th>ID</th><th>Name</th><th>Capacity</th></tr></thead>
-                    <tbody><tr><td colspan="3">Loading...</td></tr></tbody>
+                    <thead><tr><th>ID</th><th>Room Number</th></tr></thead>
+                    <tbody><tr><td colspan="2">Loading...</td></tr></tbody>
                 </table>
             </div>
         </section>
@@ -79,17 +79,23 @@
                             <input type="number" id="movieDuration" class="form-control" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label" for="movieDesc">Description</label>
-                        <textarea id="movieDesc" class="form-control" rows="3"></textarea>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="movieStartDate">Start Date</label>
+                            <input type="date" id="movieStartDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="movieEndDate">End Date</label>
+                            <input type="date" id="movieEndDate" class="form-control" required>
+                        </div>
                     </div>
                     <button type="submit" class="btn">Create Movie</button>
                 </form>
             </div>
             <div class="table-card table-wrapper">
                 <table id="table-movies">
-                    <thead><tr><th>ID</th><th>Title</th><th>Duration</th></tr></thead>
-                    <tbody><tr><td colspan="3">Loading...</td></tr></tbody>
+                    <thead><tr><th>ID</th><th>Title</th><th>Duration</th><th>Start Date</th><th>End Date</th></tr></thead>
+                    <tbody><tr><td colspan="5">Loading...</td></tr></tbody>
                 </table>
             </div>
         </section>
@@ -98,7 +104,7 @@
         <section id="sessions" class="tab-content">
             <h2>Manage Sessions</h2>
             <div class="card">
-                <h3>New Session Batch</h3>
+                <h3>New Session</h3>
                 <form id="form-session-batch">
                     <div class="form-row">
                         <div class="form-group">
@@ -114,27 +120,27 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="form-label" for="sessionDescription">Description</label>
+                        <input type="text" id="sessionDescription" class="form-control" required>
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label" for="batchStartDate">Start Date</label>
-                            <input type="date" id="batchStartDate" class="form-control" required>
+                            <label class="form-label" for="sessionStartTime">Start Time</label>
+                            <input type="time" id="sessionStartTime" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="batchEndDate">End Date</label>
-                            <input type="date" id="batchEndDate" class="form-control" required>
+                            <label class="form-label" for="sessionTicketPrice">Ticket Price</label>
+                            <input type="number" id="sessionTicketPrice" step="0.01" class="form-control" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label" for="batchShowtimes">Showtimes (comma separated, e.g., 14:00, 16:30)</label>
-                        <input type="text" id="batchShowtimes" class="form-control" placeholder="14:00, 16:30" required>
-                    </div>
-                    <button type="submit" id="btn-create-batch" class="btn">Generate Batch</button>
+                    <button type="submit" id="btn-create-batch" class="btn">Create Session</button>
                 </form>
             </div>
             <div class="table-card table-wrapper">
                 <table id="table-sessions">
-                    <thead><tr><th>ID</th><th>Movie</th><th>Room</th><th>Start Time</th></tr></thead>
-                    <tbody><tr><td colspan="4">Loading...</td></tr></tbody>
+                    <thead><tr><th>ID</th><th>Movie</th><th>Room</th><th>Start Time</th><th>Ticket Price</th></tr></thead>
+                    <tbody><tr><td colspan="5">Loading...</td></tr></tbody>
                 </table>
             </div>
         </section>

@@ -1,5 +1,4 @@
 import { ticketsApiService } from '../services/ticketsApiService.js';
-
 // Utility to parse URL path to determine current page
 const getPageName = () => {
     const path = window.location.pathname;
