@@ -82,7 +82,7 @@ function renderMovies(movies) {
         card.className = 'card movie-card';
         card.innerHTML = `
             <h3>${movie.title}</h3>
-            <p>${movie.duration} mins</p>
+            <p>${movie.durationMinutes} mins</p>
         `;
         card.addEventListener('click', () => handleMovieSelect(movie));
         container.appendChild(card);
@@ -91,13 +91,17 @@ function renderMovies(movies) {
 
 async function handleMovieSelect(movie) {
     state.selectedMovieId = movie.id;
+
+    // CORREÇÃO 3A: Guardar os detalhes do filme na memória para a tela das cadeiras conseguir ler
+    sessionStorage.setItem('selectedMovie', JSON.stringify(movie));
+
     document.getElementById('movies-container').classList.add('hidden');
-    
+
     const sessionsSection = document.getElementById('sessions-section');
     sessionsSection.classList.remove('hidden');
-    
+
     document.getElementById('selected-movie-title').textContent = `Sessions for ${movie.title}`;
-    
+
     const sessionsContainer = document.getElementById('sessions-container');
     sessionsContainer.innerHTML = '<p>Loading sessions...</p>';
 
@@ -118,27 +122,25 @@ function renderSessions(sessions) {
         return;
     }
 
-    // Sort sessions by time
-    sessions.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
-
+    // Remover ordenação por Date() já que a API só envia a Hora
     sessions.forEach(session => {
         const div = document.createElement('div');
         div.className = 'session-item';
-        
-        const dateObj = new Date(session.startTime);
-        const dateStr = dateObj.toLocaleDateString();
-        const timeStr = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
+        // CORREÇÃO 2: Apenas imprimir a hora pura da API, sem usar new Date()
         div.innerHTML = `
             <div>
-                <strong>${dateStr}</strong> - ${timeStr}
+                <strong>Horário:</strong> ${session.startTime}
             </div>
             <button class="btn">Select Seats</button>
         `;
-        
+
         div.querySelector('button').addEventListener('click', () => {
-            sessionStorage.setItem('currentSessionId', session.id);
-            window.location.href = './pages/tickets/seatSelection.html';
+            // CORREÇÃO 3B: O nome da variável tem de ser exatamente 'selectedSessionId'
+            sessionStorage.setItem('selectedSessionId', session.id);
+
+            // CORREÇÃO 3C: Caminho limpo para evitar o 404 no Rider
+            window.location.href = 'pages/tickets/seatSelection.html';
         });
 
         container.appendChild(div);
@@ -147,64 +149,101 @@ function renderSessions(sessions) {
 
 // --- SEAT SELECTION LOGIC ---
 async function initSeatSelection() {
-    const sessionId = sessionStorage.getItem('currentSessionId');
-    if (!sessionId) {
-        showError('No session selected. Please go back to the home page.');
+    const sessionId = sessionStorage.getItem('selectedSessionId');
+    const movieJson = sessionStorage.getItem('selectedMovie');
+
+    if (!sessionId || !movieJson) {
+        window.location.href = 'index.html';
         return;
     }
+
+    const movie = JSON.parse(movieJson);
+
+    document.getElementById('movie-title').textContent = movie.title;
+    // O erro do Undefined corrigido aqui:
+    document.getElementById('movie-duration').textContent = `${movie.durationMinutes} minutos`;
 
     try {
-        // Since we don't have a direct endpoint to get session details by ID easily (based on contract),
-        // we'll just show "Session Details" generically or try to fetch it if there was an endpoint.
-        document.getElementById('session-info').textContent = 'Session Details';
-
         const seats = await ticketsApiService.getSessionSeats(sessionId);
-        renderSeats(seats);
+        renderSeatsGrid(seats);
     } catch (err) {
-        showError('Failed to load seats. Please try again.');
-        document.getElementById('seats-loading').classList.add('hidden');
+        const container = document.getElementById('seats-container');
+        if (container) container.innerHTML = `<p style="color:red;">Erro ao carregar mapa de cadeiras. Verifique se a API está ligada.</p>`;
     }
-
-    document.getElementById('btn-checkout').addEventListener('click', () => {
-        if (seatState.selectedSeats.length > 0) {
-            sessionStorage.setItem('selectedSeats', JSON.stringify(seatState.selectedSeats));
-            window.location.href = 'checkout.html';
-        }
-    });
 }
 
-function renderSeats(seats) {
-    document.getElementById('seats-loading').classList.add('hidden');
+function renderSeatsGrid(seats) {
     const container = document.getElementById('seats-container');
-    const grid = document.getElementById('seat-grid');
-    
-    container.classList.remove('hidden');
-    document.getElementById('selection-summary').classList.remove('hidden');
+    if (!container) return;
+
+    container.innerHTML = ''; // Limpa a mensagem "Loading seats..."
 
     if (!seats || seats.length === 0) {
-        grid.innerHTML = '<p>No seats configuration found.</p>';
+        container.innerHTML = '<p>Nenhuma cadeira configurada para esta sessão.</p>';
         return;
     }
 
-    // Sort seats nicely
-    seats.sort((a, b) => a.seatNumber.localeCompare(b.seatNumber));
+    // Cria um mapa/grid responsivo de cadeiras (10 lugares por fila)
+    const grid = document.createElement('div');
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = 'repeat(10, 1fr)';
+    grid.style.gap = '10px';
+    grid.style.marginTop = '20px';
 
     seats.forEach(seat => {
-        const el = document.createElement('div');
-        el.className = 'seat';
-        el.textContent = seat.seatNumber;
+        const btn = document.createElement('button');
+        btn.textContent = seat.seatNumber;
 
-        const status = seat.status.toLowerCase();
-        
-        if (status === 'available') {
-            el.classList.add('available');
-            el.addEventListener('click', () => toggleSeatSelection(seat.seatNumber, el));
+        // Estilo Base
+        btn.style.padding = '15px 5px';
+        btn.style.border = 'none';
+        btn.style.borderRadius = '5px';
+        btn.style.fontWeight = 'bold';
+        btn.style.cursor = seat.status === 'Available' ? 'pointer' : 'not-allowed';
+
+        // Cores baseadas no Status da Cadeira
+        if (seat.status !== 'Available') {
+            btn.style.backgroundColor = '#dc3545'; // Vermelho (Vendido)
+            btn.style.color = 'white';
+            btn.disabled = true;
         } else {
-            el.classList.add('sold');
-        }
+            btn.style.backgroundColor = '#28a745'; // Verde (Disponível)
+            btn.style.color = 'white';
 
-        grid.appendChild(el);
+            // Lógica ao clicar numa cadeira livre
+            btn.addEventListener('click', () => {
+                if (seatState.selectedSeats.includes(seat.seatNumber)) {
+                    // Desmarca
+                    seatState.selectedSeats = seatState.selectedSeats.filter(s => s !== seat.seatNumber);
+                    btn.style.backgroundColor = '#28a745'; // Volta a ficar Verde
+                } else {
+                    // Seleciona
+                    seatState.selectedSeats.push(seat.seatNumber);
+                    btn.style.backgroundColor = '#007bff'; // Fica Azul
+                }
+                updateSeatSummary();
+            });
+        }
+        grid.appendChild(btn);
     });
+
+    container.appendChild(grid);
+}
+
+function updateSeatSummary() {
+    const summarySpan = document.getElementById('selected-seats-summary');
+    const checkoutBtn = document.getElementById('btn-proceed-checkout'); // Confirme se o ID do botão no seu HTML é este
+
+    if (summarySpan) {
+        summarySpan.textContent = seatState.selectedSeats.length > 0
+            ? seatState.selectedSeats.join(', ')
+            : 'Nenhuma selecionada';
+    }
+
+    if (checkoutBtn) {
+        // Bloqueia o botão de pagar se não tiver escolhido cadeiras
+        checkoutBtn.disabled = seatState.selectedSeats.length === 0;
+    }
 }
 
 function toggleSeatSelection(seatNumber, element) {
