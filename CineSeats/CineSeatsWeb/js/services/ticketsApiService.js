@@ -29,13 +29,29 @@ export const ticketsApiService = {
      * Create an order
      */
     createOrder: async (customerEmail, sessionId, seatNumbers) => {
-        return await fetchData('/orders', {
+        return await fetchData('/Ticket/order', {
             method: 'POST',
             body: JSON.stringify({
                 customerEmail,
                 sessionId,
                 seatNumbers
             })
+        });
+    },
+
+    /**
+     * Get session by id
+     */
+    getSessionById: async (sessionId) => {
+        return await fetchData(`/session/${sessionId}`);
+    },
+
+    /**
+     * Process mock payment
+     */
+    processMockPayment: async (orderId) => {
+        return await fetchData(`/Payments/mock-checkout/${orderId}`, {
+            method: 'POST'
         });
     }
 };

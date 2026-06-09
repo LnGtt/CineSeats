@@ -49,9 +49,9 @@ public class TicketController : ControllerBase
         try
         {
             // Nota: Ajuste o nome do DTO 'CreateOrderRequest' se o seu for diferente
-            var orderId = await _createOrderUseCase.Run(request);
+            var orderResponse = await _createOrderUseCase.Run(request);
             
-            return Ok(new { orderId = orderId, message = "Pedido criado com sucesso! Pronto para o pagamento." });
+            return Ok(new { orderId = orderResponse.Id, message = "Pedido criado com sucesso! Pronto para o pagamento." });
         }
         catch (ArgumentException ex)
         {

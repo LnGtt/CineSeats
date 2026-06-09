@@ -65,6 +65,48 @@ public class PaymentsController : ControllerBase
     }
 
     // ==========================================
+    // 1.5. MOCK CHECKOUT PARA FRONT-END
+    // ==========================================
+    [HttpPost("mock-checkout/{orderId}")]
+    public async Task<IActionResult> MockCheckout(Guid orderId, [FromServices] ISessionSeatRepository sessionSeatRepository, [FromServices] IUnitOfWork unitOfWork)
+    {
+        try
+        {
+            var realOrder = await _orderRepository.GetOrder(orderId);
+            if (realOrder == null) return NotFound("Order not found");
+
+            // Calls the PagSeguro mock
+            var (paymentUrl, transactionId) = await _paymentService.CreatePaymentAsync(realOrder);
+
+            realOrder.SetAsAwaitingPayment(transactionId);
+            
+            // Confirm the payment
+            realOrder.MarkAsPaid();
+            
+            // Confirm the seats
+            var sessionId = realOrder.Tickets.First().SessionId;
+            var seatNumbers = realOrder.Tickets.Select(t => t.SeatNumber);
+            var seats = await sessionSeatRepository.GetSpecificSeats(sessionId, seatNumbers);
+            
+            foreach(var seat in seats)
+            {
+                seat.ConfirmSale();
+                await sessionSeatRepository.UpdateSessionSeat(seat);
+            }
+            
+            await _orderRepository.UpdateOrder(realOrder);
+            await unitOfWork.Commit();
+
+            return Ok(new { Message = "Mock payment successful", PaymentUrl = paymentUrl });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+    }
+
+    // ==========================================
+
     // 2. ENDPOINT DO WEBHOOK (Notificação do PagSeguro)
     // ==========================================
     [HttpPost("pagseguro-webhook")]

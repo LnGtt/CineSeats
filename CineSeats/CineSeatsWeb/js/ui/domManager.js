@@ -250,17 +250,31 @@ function updateCheckoutButton() {
 }
 
 // --- CHECKOUT LOGIC ---
-function initCheckout() {
+async function initCheckout() {
     const sessionId = sessionStorage.getItem('currentSessionId');
     const selectedSeatsJson = sessionStorage.getItem('selectedSeats');
+    const movieJson = sessionStorage.getItem('selectedMovie');
 
-    if (!sessionId || !selectedSeatsJson) {
+    if (!sessionId || !selectedSeatsJson || !movieJson) {
         showError('Missing order information. Please start over.');
         return;
     }
 
     const selectedSeats = JSON.parse(selectedSeatsJson);
+    const movie = JSON.parse(movieJson);
+
+    document.getElementById('summary-movie').textContent = movie.title;
     document.getElementById('summary-seats').textContent = selectedSeats.join(', ');
+
+    try {
+        const session = await ticketsApiService.getSessionById(sessionId);
+        document.getElementById('summary-session').textContent = session.startTime || 'Not available';
+        const price = session.ticketPrice || 0;
+        const total = price * selectedSeats.length;
+        document.getElementById('summary-price').textContent = total.toFixed(2);
+    } catch(err) {
+        console.error("Failed to fetch session details", err);
+    }
 
     const form = document.getElementById('checkout-form');
     form.addEventListener('submit', async (e) => {
@@ -275,13 +289,24 @@ function initCheckout() {
 
             const orderResponse = await ticketsApiService.createOrder(email, sessionId, selectedSeats);
             
+            // Wait for the payment mock
+            await ticketsApiService.processMockPayment(orderResponse.orderId);
+            
             // Show Success
             document.getElementById('checkout-form-container').classList.add('hidden');
-            document.getElementById('success-container').classList.remove('hidden');
-            
-            // Generate some fake QR string representation
-            const qrString = btoa(`${email}-${sessionId}-${selectedSeats.join(',')}`);
-            document.getElementById('qr-string').textContent = `Order-Ref: ${qrString}`;
+            const successContainer = document.getElementById('success-container');
+            successContainer.classList.remove('hidden');
+            successContainer.innerHTML = `
+                <div class="alert alert-success">
+                    <h2>Thank you for your purchase</h2>
+                    <p>Your tickets have been successfully paid and reserved.</p>
+                </div>
+                <div style="margin: 2rem auto; width: 200px; height: 200px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc;">
+                    QR CODE
+                </div>
+                <p style="font-family: monospace; word-break: break-all; margin-bottom: 2rem;">Order-Ref: ${orderResponse.orderId}</p>
+                <a href="../../index.html" class="btn">Back to Home</a>
+            `;
 
             // Clean up
             sessionStorage.removeItem('selectedSeats');
