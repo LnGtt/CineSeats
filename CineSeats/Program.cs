@@ -65,16 +65,17 @@ builder.Services.AddHttpClient<IPaymentService, PagSeguroService>();
 builder.Services.AddScoped<IQrCodeService, QrCodeService>();
 
 
-/*
+
 var postgreConnectionString = builder.Configuration.GetConnectionString("PostgreConnection");
 builder.Services.AddDbContext<Context_Post>(options =>
     options.UseNpgsql(postgreConnectionString)
 );
-*/
 
+/*
 builder.Services.AddDbContext<Context_Post>(options =>
     options.UseInMemoryDatabase("CineSeatsDatabase")
 );
+*/
 
 //FALTOU ISSO TAMBEM
 builder.Services.AddCors(options =>

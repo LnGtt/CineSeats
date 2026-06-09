@@ -225,18 +225,36 @@ function renderSessionsTable() {
 function updateRoomSelects() {
     const select = document.getElementById('batchRoomId');
     if (!select) return;
-    select.innerHTML = '<option value="">Select Room...</option>';
-    dashboardState.rooms.forEach(r => {
-        select.innerHTML += `<option value="${r.id}">${r.roomNumber || r.name}</option>`;
+    
+    select.innerHTML = '';
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select Room...';
+    select.appendChild(defaultOption);
+
+    dashboardState.rooms.forEach(room => {
+        const option = document.createElement('option');
+        option.value = room.id || room.Id;
+        option.textContent = room.roomNumber || room.RoomNumber || room.name || room.Name;
+        select.appendChild(option);
     });
 }
 
 function updateMovieSelects() {
     const select = document.getElementById('batchMovieId');
     if (!select) return;
-    select.innerHTML = '<option value="">Select Movie...</option>';
-    dashboardState.movies.forEach(m => {
-        select.innerHTML += `<option value="${m.id}">${m.title}</option>`;
+    
+    select.innerHTML = '';
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select Movie...';
+    select.appendChild(defaultOption);
+
+    dashboardState.movies.forEach(movie => {
+        const option = document.createElement('option');
+        option.value = movie.id || movie.Id;
+        option.textContent = movie.title || movie.Title;
+        select.appendChild(option);
     });
 }
 
