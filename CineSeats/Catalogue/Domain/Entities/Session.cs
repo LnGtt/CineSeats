@@ -1,4 +1,4 @@
-﻿namespace CineSeats.Catalogue.Domain.Entities;
+namespace CineSeats.Catalogue.Domain.Entities;
 
 public class Session
 {
@@ -8,6 +8,8 @@ public class Session
     public string Description { get; private set; }
     public TimeOnly? StartTime { get; private set; }
     public decimal TicketPrice { get; private set; }
+
+    protected Session() { }
 
     public Session(Guid movieId, Guid roomId, string description, TimeOnly? startTime, decimal ticketPrice)
     {

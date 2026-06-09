@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 
 namespace CineSeats.Catalogue.Domain.Entities;
 
@@ -11,6 +11,8 @@ public class Movie
     public DateOnly EndDate { get; private set; }
     
     private readonly DateOnly _today = DateOnly.FromDateTime(DateTime.Today);
+    
+    protected Movie() { }
     
     public Movie(string title, int durationMinutes, DateOnly startDate,  DateOnly endDate)
     {
